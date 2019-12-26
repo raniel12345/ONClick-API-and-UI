@@ -1,6 +1,6 @@
 # ONClick API and User Interface
 
-This is the fullstack app for the ONClick
+This is the fullstack app for the ONClick\
 ONClick is a project management tool for ON Semiconductor Tarlac. This repository is only for ONClick API.
 This is my personal project but this system is mainly use in OSPI Tarlac
 
