@@ -35,6 +35,16 @@ export default class GroupAPI extends DataSource {
     });
   }
 
+  async getAllGroupsIdById(userId) {
+    return await this.store.GroupUser.findAll({
+      where: {
+        userId: userId
+      }
+    }).then(groups => {
+      return groups ? groups.map(g => g.groupId) : [];
+    });
+  }
+
   async createNew(title, description) {
     return await this.store.Group.create({
       title,
