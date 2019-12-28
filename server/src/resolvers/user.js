@@ -1,5 +1,5 @@
 import { combineResolvers } from "graphql-resolvers";
-import { ForbiddenError } from "apollo-server";
+// import { ForbiddenError } from "apollo-server";
 import { isAdmin, isAuthenticated } from "./authorization";
 
 export default {
