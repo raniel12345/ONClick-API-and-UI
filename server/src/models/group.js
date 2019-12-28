@@ -21,7 +21,7 @@ const group = (sequelize, DataTypes) => {
 
   Group.associate = models => {
     Group.belongsToMany(models.User, {
-      through: models.GroupUsers,
+      through: models.GroupUser,
       as: "users",
       foreignKey: "groupId"
     });

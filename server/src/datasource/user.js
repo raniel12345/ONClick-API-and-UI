@@ -190,6 +190,24 @@ export default class UserAPI extends DataSource {
       where: { id: userId }
     });
   }
-}
 
-// module.exports = UserAPI;
+  async addToGroup(userId, groupId) {
+    let User = await this.store.User.findByPk(userId);
+    let Group = await this.store.Group.findByPk(groupId);
+
+    if (!User) {
+      throw new UserInputError("User not found");
+    }
+
+    if (!Group) {
+      throw new UserInputError("Group not found");
+    }
+
+    await this.store.GroupUser.create({
+      userId,
+      groupId
+    });
+
+    return Group;
+  }
+}

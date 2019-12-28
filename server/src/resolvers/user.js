@@ -85,6 +85,12 @@ export default {
       async (_, { id }, { dataSources }) => {
         return await dataSources.UserAPI.deleteById(id);
       }
+    ),
+    addUserToGroup: combineResolvers(
+      isAuthenticated,
+      async (_, { userId, groupId }, { dataSources }) => {
+        return await dataSources.UserAPI.addToGroup(userId, groupId);
+      }
     )
   },
   User: {

@@ -43,7 +43,7 @@ const user = (sequelize, DataTypes) => {
     User.hasMany(models.Project);
     User.hasMany(models.ProjectStatus);
     User.belongsToMany(models.Group, {
-      through: models.GroupUsers,
+      through: models.GroupUser,
       as: "groups",
       foreignKey: "userId"
     });

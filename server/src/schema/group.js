@@ -1,7 +1,7 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type UserGroup {
+  type Group {
     id: ID!
     title: String!
     description: String!
@@ -12,18 +12,19 @@ export default gql`
   }
 
   extend type Query {
-    userGroups: [UserGroup!]
-    userGroupById(id: ID!): UserGroup!
+    Groups: [Group!]
+    GroupById(id: ID!): Group!
   }
 
-  input UserGroupInput {
+  input GroupInput {
     id: ID
     title: String!
     description: String!
   }
 
   extend type Mutation {
-    createUserGroup(input: UserGroupInput): UserGroup!
-    updateUserGroup(input: UserGroupInput): UserGroup!
+    createGroup(input: GroupInput): Group!
+    updateGroup(input: GroupInput): Group!
+    addUserToGroup(userId: ID!, groupId: ID!): Group!
   }
 `;

@@ -1,6 +1,6 @@
 import { gql } from "apollo-server";
 import userSchema from "./user";
-import userGroupSchema from "./userGroup";
+import GroupSchema from "./group";
 import projectStatusSchema from "./projectStatus";
 import projectSchema from "./project";
 import projectFeatureSchema from "./projectFeature";
@@ -24,7 +24,7 @@ const linkSchema = gql`
 export default [
   linkSchema,
   userSchema,
-  userGroupSchema,
+  GroupSchema,
   projectStatusSchema,
   projectSchema,
   projectFeatureSchema,

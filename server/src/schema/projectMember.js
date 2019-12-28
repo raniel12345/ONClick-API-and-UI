@@ -18,7 +18,7 @@ export default gql`
 
   type GroupMember {
     id: ID!
-    group: UserGroup!
+    group: Group!
     role: ProjectRoles!
     createdAt: Date!
     updatedAt: Date!

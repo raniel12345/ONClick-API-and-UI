@@ -13,7 +13,7 @@ import models, { sequelize } from "./models";
 import UserAPI from "./datasource/user";
 import ProjectAPI from "./datasource/project";
 import ProjectStatusAPI from "./datasource/projectStatus";
-import UserGroupAPI from "./datasource/group";
+import GroupAPI from "./datasource/group";
 
 const is_production = process.env.NODE_ENV === "production" ? false : true;
 
@@ -61,7 +61,7 @@ const server = new ApolloServer({
       UserAPI: new UserAPI({ store: models }),
       ProjectAPI: new ProjectAPI({ store: models }),
       ProjectStatusAPI: new ProjectStatusAPI({ store: models }),
-      UserGroupAPI: new UserGroupAPI({ store: models })
+      GroupAPI: new GroupAPI({ store: models })
     };
   },
   context,

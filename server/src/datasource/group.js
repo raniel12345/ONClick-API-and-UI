@@ -1,7 +1,7 @@
 import { DataSource } from "apollo-datasource";
 import { UserInputError } from "apollo-server";
 
-export default class ProjectStatusAPI extends DataSource {
+export default class GroupAPI extends DataSource {
   constructor({ store }) {
     super();
     this.store = store;
@@ -23,6 +23,16 @@ export default class ProjectStatusAPI extends DataSource {
 
   async getAll() {
     return await this.store.Group.findAll();
+  }
+
+  async getAllMembersIdById(groupId) {
+    return await this.store.GroupUser.findAll({
+      where: {
+        groupId: groupId
+      }
+    }).then(members => {
+      return members ? members.map(m => m.userId) : [];
+    });
   }
 
   async createNew(title, description) {

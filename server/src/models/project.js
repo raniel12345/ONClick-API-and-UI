@@ -61,7 +61,7 @@ const project = (sequelize, DataTypes) => {
       through: models.PerUserProjectMember,
       foreignKey: "projectId"
     });
-    Project.belongsToMany(models.GroupUsers, {
+    Project.belongsToMany(models.GroupUser, {
       through: models.PerGroupProjectMember,
       foreignKey: "projectId"
     });

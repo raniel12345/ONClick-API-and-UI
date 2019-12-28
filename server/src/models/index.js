@@ -47,7 +47,7 @@ if (process.env.DATABASE_URL) {
 const models = {
   User: sequelize.import("./user"),
   Group: sequelize.import("./group"),
-  GroupUsers: sequelize.import("./groupUsers"),
+  GroupUser: sequelize.import("./groupUser"),
   Project: sequelize.import("./project"),
   ProjectFeature: sequelize.import("./projectFeature"),
   ProjectIssue: sequelize.import("./projectIssue"),
