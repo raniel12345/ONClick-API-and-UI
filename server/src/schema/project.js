@@ -69,7 +69,9 @@ export default gql`
     createProject(input: ProjectInput!): Project!
     updateProject(input: ProjectUpdateInput!): Project!
     addProjectModule(module: Module!, projectId: ID!): [Module!]!
+    deleteProjectModule(module: Module!, projectId: ID): [Module!]
     addProjectTag(tag: String!, projectId: ID!): [String!]!
+    deleteProjectTag(tag: String!, projectId: ID): [String!]
     deleteProject(id: ID!, userId: ID): ProjectResponse
   }
 `;

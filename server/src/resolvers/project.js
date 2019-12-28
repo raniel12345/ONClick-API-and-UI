@@ -102,10 +102,22 @@ export default {
         return await dataSources.ProjectAPI.addModule(module, projectId, id);
       }
     ),
+    deleteProjectModule: combineResolvers(
+      isAuthenticated,
+      async (_, { module, projectId }, { me: { id }, dataSources }) => {
+        return await dataSources.ProjectAPI.deleteModule(module, projectId, id);
+      }
+    ),
     addProjectTag: combineResolvers(
       isAuthenticated,
       async (_, { tag, projectId }, { me: { id }, dataSources }) => {
         return await dataSources.ProjectAPI.addTag(tag, projectId, id);
+      }
+    ),
+    deleteProjectTag: combineResolvers(
+      isAuthenticated,
+      async (_, { tag, projectId }, { me: { id }, dataSources }) => {
+        return await dataSources.ProjectAPI.deleteTag(tag, projectId, id);
       }
     )
   },

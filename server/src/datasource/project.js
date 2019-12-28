@@ -141,9 +141,47 @@ export default class ProjectAPI extends DataSource {
         let modules = project.modules;
         modules.push(module);
 
-        return project.update({
-          modules
-        });
+        return project
+          .update({
+            modules
+          })
+          .then(updatedProject => {
+            return updatedProject.modules;
+          });
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  deleteModule(module, projectId, userId) {
+    if (isNaN(projectId)) {
+      throw new Error("Project Id is required or invalid");
+    }
+
+    projectId = parseInt(projectId);
+
+    return this.store.Project.findByPk(projectId)
+      .then(async project => {
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if (userId !== project.userId) {
+          throw new Error("Permission denied!");
+        }
+
+        let modules = project.modules;
+        let index = modules.indexOf(module);
+        modules.splice(index, 1);
+
+        return project
+          .update({
+            modules
+          })
+          .then(updatedProject => {
+            return updatedProject.modules;
+          });
       })
       .catch(err => {
         throw err;
@@ -170,9 +208,48 @@ export default class ProjectAPI extends DataSource {
         let tags = project.tags;
         tags.push(tag);
 
-        return project.update({
-          tags
-        });
+        return await project
+          .update({
+            tags
+          })
+          .then(updatedProject => {
+            return updatedProject.tags;
+          });
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  deleteTag(tag, projectId, userId) {
+    if (isNaN(projectId)) {
+      throw new Error("Project Id is required or invalid");
+    }
+
+    projectId = parseInt(projectId);
+
+    return this.store.Project.findByPk(projectId)
+      .then(async project => {
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if (userId !== project.userId) {
+          throw new Error("Permission denied!");
+        }
+
+        let tags = project.tags;
+        // Delete from the array
+        let index = tags.indexOf(module);
+        tags.splice(index, 1);
+
+        return await project
+          .update({
+            tags
+          })
+          .then(updatedProject => {
+            return updatedProject.tags;
+          });
       })
       .catch(err => {
         throw err;
@@ -187,4 +264,6 @@ export default class ProjectAPI extends DataSource {
       }
     });
   }
+
+  async addMember(projectId, memberType, memberId) {}
 }
