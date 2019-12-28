@@ -16,11 +16,13 @@ export default gql`
   }
 
   input UserGroupInput {
+    id: ID
     title: String!
     description: String!
   }
 
   extend type Mutation {
     createUserGroup(input: UserGroupInput): UserGroup!
+    updateUserGroup(input: UserGroupInput): UserGroup!
   }
 `;
