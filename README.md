@@ -68,7 +68,7 @@ const createToken = async (user, secret, expiresIn) => {
 
 ### Get all users
 
-![](assets/authorization-token.png)
+![](assets/authorization-token.PNG)
 
 ```
 query{
@@ -87,4 +87,4 @@ query{
 }
 ```
 
-![](assets/output.png)
+![](assets/output.PNG)
