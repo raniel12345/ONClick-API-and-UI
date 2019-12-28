@@ -31,7 +31,7 @@ cd client && npm i && npm start
 
 - **Raniel Garcia** - _Initial work_
 
-## Sample GraphQL Queries
+## Sample GraphQL Mutation/Queries
 
 ### SignIn
 
@@ -61,5 +61,24 @@ const createToken = async (user, secret, expiresIn) => {
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJyYW5pZWwxMDFAZ21haWwuY29tIiwidXNlcm5hbWUiOiJSYW5pZWwiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1Nzc1Mzk1NDksImV4cCI6MTU3NzU0MTM0OX0.GwVt2gHDfH9SNG5-FtGOGISEwG_HVu0ZvNBgR_bDmk8"
         }
     }
+}
+```
+
+### Get all users
+
+```
+query{
+  users{
+    email
+    username
+    groups{
+    	title
+      description
+      members{
+        username
+        email
+      }
+    }
+  }
 }
 ```
