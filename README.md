@@ -33,13 +33,33 @@ cd client && npm i && npm start
 
 ## Sample GraphQL Queries
 
-# SignIn
+### SignIn
 
 ```
-    mutation{
-        signIn (login: "raniel101@gmail.com", password:"swordFISH25")
+mutation{signIn (login: "ranielgarcia@email.com", password:"password")
     {
         token
     }
+}
+```
+
+### code to generate token:
+
+```
+const createToken = async (user, secret, expiresIn) => {
+    const { id, email, username, role } = user;
+    return await jwt.sign({ id, email, username, role }, secret, { expiresIn });
+};
+```
+
+### output:
+
+```
+{
+    "data": {
+        "signIn": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJyYW5pZWwxMDFAZ21haWwuY29tIiwidXNlcm5hbWUiOiJSYW5pZWwiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1Nzc1Mzk1NDksImV4cCI6MTU3NzU0MTM0OX0.GwVt2gHDfH9SNG5-FtGOGISEwG_HVu0ZvNBgR_bDmk8"
+        }
     }
+}
 ```
