@@ -1,5 +1,4 @@
 import { DataSource } from "apollo-datasource";
-import models from "../models";
 
 export default class ProjectStatusAPI extends DataSource {
   constructor({ store }) {
