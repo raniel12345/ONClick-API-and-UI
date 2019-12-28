@@ -1,4 +1,5 @@
 import { DataSource } from "apollo-datasource";
+import { UserInputError } from "apollo-server";
 
 export default class ProjectStatusAPI extends DataSource {
   constructor({ store }) {
@@ -32,11 +33,15 @@ export default class ProjectStatusAPI extends DataSource {
   }
 
   async updateGroup(id, title, description) {
-    return await this.store.Group.findByPk(id).then(async group => {
-      return await group.update({
-        title,
-        description
+    return await this.store.Group.findByPk(id)
+      .then(async group => {
+        return await group.update({
+          title,
+          description
+        });
+      })
+      .catch(err => {
+        throw new UserInputError("Group not found");
       });
-    });
   }
 }
