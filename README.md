@@ -30,3 +30,16 @@ cd client && npm i && npm start
 ## Authors
 
 - **Raniel Garcia** - _Initial work_
+
+## Sample GraphQL Queries
+
+# SignIn
+
+```
+    mutation{
+        signIn (login: "raniel101@gmail.com", password:"swordFISH25")
+    {
+        token
+    }
+    }
+```
