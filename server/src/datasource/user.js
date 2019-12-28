@@ -45,6 +45,13 @@ export default class UserAPI extends DataSource {
     return await this.store.User.findByPk(userId);
   }
 
+  async getMeInfo() {
+    if (this.context.me && this.context.me.id) {
+      return await this.getById(this.context.me.id);
+    }
+    return {};
+  }
+
   /**
    * Create new user or sign up
    */
