@@ -13,6 +13,7 @@ import models, { sequelize } from "./models";
 import UserAPI from "./datasource/user";
 import ProjectAPI from "./datasource/project";
 import ProjectStatusAPI from "./datasource/projectStatus";
+import UserGroupAPI from "./datasource/group";
 
 const is_production = process.env.NODE_ENV === "production" ? false : true;
 
@@ -59,11 +60,14 @@ const server = new ApolloServer({
     return {
       UserAPI: new UserAPI({ store: models }),
       ProjectAPI: new ProjectAPI({ store: models }),
-      ProjectStatusAPI: new ProjectStatusAPI({ store: models })
+      ProjectStatusAPI: new ProjectStatusAPI({ store: models }),
+      UserGroupAPI: new UserGroupAPI({ store: models })
     };
   },
   context,
   formatError: error => {
+    // console.log(err);
+
     if (error.message.startsWith("Database Error: ")) {
       return new Error("Internal server error");
     }
@@ -79,6 +83,9 @@ const server = new ApolloServer({
       message
     };
   },
+  // formatResponse: res => {
+  //   console.log(res);
+  // },
   debug: is_production
 });
 
