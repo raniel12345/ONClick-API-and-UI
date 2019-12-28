@@ -45,6 +45,15 @@ export default gql`
     modules: [Module!]!
   }
 
+  input ProjectUpdateInput {
+    id: ID
+    title: String!
+    subProject: String
+    description: String!
+    homePage: String!
+    isPublic: Boolean!
+  }
+
   extend type Query {
     projects: [Project!]
     project(id: ID!): Project!
@@ -58,6 +67,9 @@ export default gql`
 
   extend type Mutation {
     createProject(input: ProjectInput!): Project!
+    updateProject(input: ProjectUpdateInput!): Project!
+    addProjectModule(module: Module!, projectId: ID!): [Module!]!
+    addProjectTag(tag: String!, projectId: ID!): [String!]!
     deleteProject(id: ID!, userId: ID): ProjectResponse
   }
 `;

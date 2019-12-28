@@ -82,6 +82,103 @@ export default class ProjectAPI extends DataSource {
       });
   }
 
+  updateProject(projectInput, userId) {
+    let {
+      id,
+      title,
+      subProject,
+      description,
+      homePage,
+      isPublic
+    } = projectInput;
+
+    if (isNaN(id)) {
+      throw new Error("Id is required or invalid");
+    }
+
+    id = parseInt(id);
+
+    return this.store.Project.findByPk(id)
+      .then(async project => {
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if (userId !== project.userId) {
+          throw new Error("Permission denied!");
+        }
+
+        return project.update({
+          title,
+          subProject,
+          description,
+          homePage,
+          isPublic
+        });
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  addModule(module, projectId, userId) {
+    if (isNaN(projectId)) {
+      throw new Error("Project Id is required or invalid");
+    }
+
+    projectId = parseInt(projectId);
+
+    return this.store.Project.findByPk(projectId)
+      .then(async project => {
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if (userId !== project.userId) {
+          throw new Error("Permission denied!");
+        }
+
+        let modules = project.modules;
+        modules.push(module);
+
+        return project.update({
+          modules
+        });
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
+  addTag(tag, projectId, userId) {
+    if (isNaN(projectId)) {
+      throw new Error("Project Id is required or invalid");
+    }
+
+    projectId = parseInt(projectId);
+
+    return this.store.Project.findByPk(projectId)
+      .then(async project => {
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if (userId !== project.userId) {
+          throw new Error("Permission denied!");
+        }
+
+        let tags = project.tags;
+        tags.push(tag);
+
+        return project.update({
+          tags
+        });
+      })
+      .catch(err => {
+        throw err;
+      });
+  }
+
   async deleteById(projectId, userId) {
     return await this.store.Project.destroy({
       where: {
