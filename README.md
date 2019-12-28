@@ -64,7 +64,11 @@ const createToken = async (user, secret, expiresIn) => {
 }
 ```
 
+### Authorization token
+
 ### Get all users
+
+<img align="right" width="450" src="assets/authorization-token.png" alt="Authorization - token" />
 
 ```
 query{
@@ -82,3 +86,5 @@ query{
   }
 }
 ```
+
+<img align="right" width="650" src="assets/output.png" alt="Authorization - token" />
