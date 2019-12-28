@@ -8,11 +8,12 @@ export default gql`
     members: [User!]
     createdAt: Date!
     updatedAt: Date!
-    deletedAt: Date!
+    deletedAt: Date
   }
 
   extend type Query {
     userGroups: [UserGroup!]
+    userGroupById(id: ID!): UserGroup!
   }
 
   input UserGroupInput {
