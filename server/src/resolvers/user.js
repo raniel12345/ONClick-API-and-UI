@@ -103,6 +103,17 @@ export default {
           userId: user.id
         }
       });
+    },
+    groups: async (user, args, { loaders, dataSources }) => {
+      const groupsIds = await dataSources.GroupAPI.getAllGroupsIdById(user.id);
+
+      let results = [];
+      for (const groupId of groupsIds) {
+        const res = await loaders.group.load(groupId);
+        if (res) results.push(res);
+      }
+
+      return results;
     }
   }
 };
