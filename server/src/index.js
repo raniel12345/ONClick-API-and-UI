@@ -40,6 +40,7 @@ const context = async ({ req }) => {
    */
   var loaders = {
     user: new DataLoader(keys => dataLoaders.user.batchUsers(keys, models)),
+    group: new DataLoader(keys => dataLoaders.group.barchGroups(keys, models)),
     projectStatus: new DataLoader(keys =>
       dataLoaders.projectStatus.batchStatus(keys, models)
     )
