@@ -9,7 +9,7 @@ export default gql`
 
   type UserMember {
     id: ID!
-    users: User!
+    user: User!
     role: ProjectRoles!
     createdAt: Date!
     updatedAt: Date!
@@ -26,8 +26,8 @@ export default gql`
   }
 
   type ProjectMembers {
-    user: [UserMember!]
-    groups: [GroupMember!]
+    memberUsers: [UserMember!]
+    memberGroups: [GroupMember!]
   }
 
   enum memberType {
@@ -36,7 +36,8 @@ export default gql`
   }
 
   input ProjectMemberInput {
-    projectID: ID!
+    projectId: ID!
+    role: ProjectRoles!
     """
     Member Type: User or Group
     """
@@ -44,11 +45,13 @@ export default gql`
     """
     it can be User ID or Group ID
     """
-    memberID: ID!
+    memberId: ID!
   }
 
   extend type Query {
-    ProjectMembers(projectID: ID!): ProjectMembers!
+    ProjectMembers(projectId: ID!): ProjectMembers!
+    ProjectUsersMembers(projectId: ID!): [UserMember!]
+    ProjectGroupsMembers(projectId: ID!): [GroupMember!]
   }
 
   extend type Mutation {
