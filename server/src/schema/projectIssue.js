@@ -49,8 +49,8 @@ export default gql`
   }
 
   extend type Mutation {
-    updateProjectIssue(issueId: ID, input: ProjectFeatureInput): ProjectIssue!
+    updateProjectIssue(issueId: ID, input: ProjectIssueInput): ProjectIssue!
     deleteProjectIssue(issueId: ID): ProjectIssue!
-    createProjectIssue(input: ProjectIssueInput!): ProjectIssue!
+    addProjectIssue(input: ProjectIssueInput!): ProjectIssue!
   }
 `;

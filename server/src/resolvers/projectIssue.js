@@ -17,7 +17,7 @@ export default {
     )
   },
   Mutation: {
-    createProjectIssue: combineResolvers(
+    addProjectIssue: combineResolvers(
       isAuthenticated,
       async (_, { input }, { dataSources }) => {
         return await dataSources.IssueAPI.createNew(input);

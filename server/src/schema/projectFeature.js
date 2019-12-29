@@ -39,10 +39,10 @@ export default gql`
 
   extend type Mutation {
     updateProjectFeature(
-      featureId: ID
-      input: ProjectFeatureInput
+      featureId: ID!
+      input: ProjectFeatureInput!
     ): ProjectFeature!
-    deleteProjectFeature(featureId: ID): ProjectFeature!
-    createProjectFeature(input: ProjectFeatureInput!): ProjectFeature!
+    deleteProjectFeature(featureId: ID!): ProjectFeature!
+    addProjectFeature(input: ProjectFeatureInput!): ProjectFeature!
   }
 `;

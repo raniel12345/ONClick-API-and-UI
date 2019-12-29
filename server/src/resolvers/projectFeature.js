@@ -17,7 +17,7 @@ export default {
     )
   },
   Mutation: {
-    createProjectFeature: combineResolvers(
+    addProjectFeature: combineResolvers(
       isAuthenticated,
       async (_, { input }, { dataSources }) => {
         return await dataSources.FeatureAPI.createNew(input);
