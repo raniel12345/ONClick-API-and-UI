@@ -11,18 +11,18 @@ export default gql`
     id: ID!
     user: User!
     role: ProjectRoles!
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   type GroupMember {
     id: ID!
     group: Group!
     role: ProjectRoles!
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   type ProjectMembers {

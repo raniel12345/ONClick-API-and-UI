@@ -6,9 +6,9 @@ export default gql`
     title: String!
     description: String!
     members: [User!]
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime
   }
 
   extend type Query {

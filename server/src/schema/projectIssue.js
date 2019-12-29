@@ -24,9 +24,9 @@ export default gql`
     spentTime: Int!
     startDate: Date!
     dueDate: Date!
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   extend type Query {

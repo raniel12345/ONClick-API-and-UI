@@ -5,9 +5,9 @@ export default gql`
     id: ID!
     status: String!
     description: String!
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   extend type Query {

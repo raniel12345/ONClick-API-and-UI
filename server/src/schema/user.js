@@ -14,9 +14,9 @@ export default gql`
     groups: [Group!]
     projects: [Project!]
     projectStatuses: [ProjectStatus!]
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   extend type Query {

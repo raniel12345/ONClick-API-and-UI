@@ -16,17 +16,18 @@ export default gql`
     percentCompletion: Int!
     startDate: Date!
     dueDate: Date!
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   extend type Query {
-    projectFeatures(projectID: ID!): [ProjectFeature]
+    projectFeatures(projectID: ID!): [ProjectFeature!]
+    projectFeature(projectId: ID, featureId: ID): ProjectFeature!
   }
 
   input ProjectFeatureInput {
-    projectID: ID!
+    projectId: ID!
     title: String!
     description: String!
     priority: Int!
@@ -37,6 +38,11 @@ export default gql`
   }
 
   extend type Mutation {
-    createProjectFeature(input: ProjectFeatureInput!): ProjectFeature
+    updateProjectFeature(
+      featureId: ID
+      input: ProjectFeatureInput
+    ): ProjectFeature!
+    deleteProjectFeature(featureId: ID): Boolean!
+    createProjectFeature(input: ProjectFeatureInput!): ProjectFeature!
   }
 `;

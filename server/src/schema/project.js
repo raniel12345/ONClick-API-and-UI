@@ -26,9 +26,9 @@ export default gql`
     status: ProjectStatus!
     members: ProjectMembers
     issues: [ProjectIssue!]
-    createdAt: Date!
-    updatedAt: Date!
-    deletedAt: Date!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deletedAt: DateTime!
   }
 
   input ProjectInput {

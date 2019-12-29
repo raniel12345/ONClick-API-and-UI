@@ -8,6 +8,7 @@ import projectIssueSchema from "./projectIssue";
 import projectMemberSchema from "./projectMember";
 
 const linkSchema = gql`
+  scalar DateTime
   scalar Date
 
   type Query {
