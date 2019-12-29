@@ -19,8 +19,12 @@ export default class FeatureAPI extends DataSource {
     this.context = config.context;
   }
 
-  async getAll() {
-    return await this.store.ProjectFeature.findAll();
+  async getAll(projectId) {
+    return await this.store.ProjectFeature.findAll({
+      where: {
+        projectId: projectId
+      }
+    });
   }
 
   async getById(projectId, featureId) {

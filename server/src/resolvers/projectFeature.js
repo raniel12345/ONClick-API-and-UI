@@ -5,8 +5,8 @@ export default {
   Query: {
     projectFeatures: combineResolvers(
       isAuthenticated,
-      async (_, __, { dataSources }) => {
-        return await dataSources.FeatureAPI.getAll();
+      async (_, { projectId }, { dataSources }) => {
+        return await dataSources.FeatureAPI.getAll(projectId);
       }
     ),
     projectFeature: combineResolvers(

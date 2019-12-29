@@ -22,7 +22,7 @@ export default gql`
   }
 
   extend type Query {
-    projectFeatures(projectID: ID!): [ProjectFeature!]
+    projectFeatures(projectId: ID!): [ProjectFeature!]
     projectFeature(projectId: ID, featureId: ID): ProjectFeature!
   }
 
