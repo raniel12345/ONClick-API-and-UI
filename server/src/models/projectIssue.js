@@ -16,15 +16,15 @@ const projectIssue = (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
-      issueType: {
-        type: DataTypes.STRING,
+      priority: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           notEmpty: true
         }
       },
-      priority: {
-        type: DataTypes.INTEGER,
+      issueType: {
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: true
@@ -37,9 +37,41 @@ const projectIssue = (sequelize, DataTypes) => {
           notEmpty: true
         }
       },
-      percentCompletion: DataTypes.INTEGER,
-      startDate: DataTypes.DATEONLY,
-      dueDate: DataTypes.DATEONLY
+      percentCompletion: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      estimatedTime: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      spentTime: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      startDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      dueDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      }
     },
     {
       paranoid: true
