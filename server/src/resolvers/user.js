@@ -108,10 +108,12 @@ export default {
       const groupsIds = await dataSources.GroupAPI.getAllGroupsIdById(user.id);
 
       let results = [];
-      for (const groupId of groupsIds) {
-        const res = await loaders.group.load(groupId);
-        if (res) results.push(res);
-      }
+
+      results = await loaders.group.loadMany(groupsIds);
+      // for (const groupId of groupsIds) {
+      //   const res = await loaders.group.load(groupId);
+      //   if (res) results.push(res);
+      // }
 
       return results;
     }

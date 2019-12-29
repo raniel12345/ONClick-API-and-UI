@@ -40,11 +40,14 @@ export default {
       const membersIds = await dataSources.GroupAPI.getAllMembersIdById(
         group.id
       );
+
       let results = [];
-      for (const userId of membersIds) {
-        const res = await loaders.user.load(userId);
-        if (res) results.push(res);
-      }
+
+      results = await loaders.user.loadMany(membersIds);
+      // for (const userId of membersIds) {
+      //   const res = await loaders.user.load(userId);
+      //   if (res) results.push(res);
+      // }
 
       return results;
     }
