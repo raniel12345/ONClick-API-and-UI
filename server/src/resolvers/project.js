@@ -16,24 +16,6 @@ export default {
         const project = await dataSources.ProjectAPI.getById(id, me.id);
         return project[0];
       }
-    ),
-    ProjectUsersMembers: combineResolvers(
-      isAuthenticated,
-      async (_, { projectId }, { me, dataSources }) => {
-        return await dataSources.ProjectAPI.getUserMembersIdsById(projectId);
-      }
-    ),
-    ProjectGroupsMembers: combineResolvers(
-      isAuthenticated,
-      async (_, { projectId }, { me, dataSources }) => {
-        return await dataSources.ProjectAPI.getGroupMembersIdsById(projectId);
-      }
-    ),
-    ProjectMembers: combineResolvers(
-      isAuthenticated,
-      async (_, { projectId }, { me, dataSources }) => {
-        return await dataSources.ProjectAPI.getAllProjectMembersIds(projectId);
-      }
     )
   },
   Mutation: {
@@ -133,22 +115,6 @@ export default {
       async (_, { tag, projectId }, { me: { id }, dataSources }) => {
         return await dataSources.ProjectAPI.deleteTag(tag, projectId, id);
       }
-    ),
-    addProjectMember: combineResolvers(
-      isAuthenticated,
-      async (
-        _,
-        { input: { projectId, role, memberType, memberId } },
-        { me: { id }, dataSources }
-      ) => {
-        return await dataSources.ProjectAPI.addMember(
-          projectId,
-          role,
-          memberType,
-          memberId,
-          id
-        );
-      }
     )
   },
   Project: {
@@ -157,16 +123,6 @@ export default {
     },
     status: async (project, args, { loaders }) => {
       return await loaders.projectStatus.load(project.projectStatusId);
-    }
-  },
-  UserMember: {
-    user: async (members, args, { loaders }) => {
-      return await loaders.user.load(members.userId);
-    }
-  },
-  GroupMember: {
-    group: async (members, args, { loaders }) => {
-      return await loaders.group.load(members.groupUserId);
     }
   }
 };

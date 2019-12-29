@@ -2,6 +2,7 @@ import { GraphQLDateTime, GraphQLDate } from "graphql-iso-date";
 
 import userResolvers from "./user";
 import projectResolvers from "./project";
+import projectMemberResolvers from "./member";
 import projectStatusResolvers from "./projectStatus";
 import GroupResolvers from "./group";
 import FeatureResolvers from "./projectFeature";
@@ -15,6 +16,7 @@ export default [
   customScalarResolver,
   userResolvers,
   projectResolvers,
+  projectMemberResolvers,
   projectStatusResolvers,
   GroupResolvers,
   FeatureResolvers

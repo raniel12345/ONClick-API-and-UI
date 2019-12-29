@@ -12,6 +12,7 @@ import models, { sequelize } from "./models";
 
 import UserAPI from "./datasource/user";
 import ProjectAPI from "./datasource/project";
+import MemberAPI from "./datasource/member";
 import ProjectStatusAPI from "./datasource/projectStatus";
 import GroupAPI from "./datasource/group";
 import FeatureAPI from "./datasource/feature";
@@ -62,6 +63,7 @@ const server = new ApolloServer({
     return {
       UserAPI: new UserAPI({ store: models }),
       ProjectAPI: new ProjectAPI({ store: models }),
+      MemberAPI: new MemberAPI({ store: models }),
       ProjectStatusAPI: new ProjectStatusAPI({ store: models }),
       GroupAPI: new GroupAPI({ store: models }),
       FeatureAPI: new FeatureAPI({ store: models })
