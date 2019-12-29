@@ -7,7 +7,7 @@ export default gql`
     description: String!
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   extend type Query {

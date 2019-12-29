@@ -18,7 +18,7 @@ export default gql`
     dueDate: Date!
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   extend type Query {

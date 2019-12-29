@@ -13,7 +13,7 @@ export default gql`
     role: ProjectRoles!
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   type GroupMember {
@@ -22,7 +22,7 @@ export default gql`
     role: ProjectRoles!
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   type ProjectMembers {

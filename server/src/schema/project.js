@@ -28,7 +28,7 @@ export default gql`
     issues: [ProjectIssue!]
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   input ProjectInput {
