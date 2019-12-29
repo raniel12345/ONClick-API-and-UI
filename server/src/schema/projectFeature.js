@@ -42,7 +42,7 @@ export default gql`
       featureId: ID
       input: ProjectFeatureInput
     ): ProjectFeature!
-    deleteProjectFeature(featureId: ID): Boolean!
+    deleteProjectFeature(featureId: ID): ProjectFeature!
     createProjectFeature(input: ProjectFeatureInput!): ProjectFeature!
   }
 `;
