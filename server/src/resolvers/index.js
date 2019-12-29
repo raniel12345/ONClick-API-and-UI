@@ -6,6 +6,7 @@ import projectMemberResolvers from "./member";
 import projectStatusResolvers from "./projectStatus";
 import GroupResolvers from "./group";
 import FeatureResolvers from "./projectFeature";
+import IssueResolvers from "./projectIssue";
 
 const customScalarResolver = {
   Date: GraphQLDate,
@@ -19,5 +20,6 @@ export default [
   projectMemberResolvers,
   projectStatusResolvers,
   GroupResolvers,
-  FeatureResolvers
+  FeatureResolvers,
+  IssueResolvers
 ];

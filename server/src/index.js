@@ -16,6 +16,7 @@ import MemberAPI from "./datasource/member";
 import ProjectStatusAPI from "./datasource/projectStatus";
 import GroupAPI from "./datasource/group";
 import FeatureAPI from "./datasource/feature";
+import IssueAPI from "./datasource/issue";
 
 const is_production = process.env.NODE_ENV === "production" ? false : true;
 
@@ -66,7 +67,8 @@ const server = new ApolloServer({
       MemberAPI: new MemberAPI({ store: models }),
       ProjectStatusAPI: new ProjectStatusAPI({ store: models }),
       GroupAPI: new GroupAPI({ store: models }),
-      FeatureAPI: new FeatureAPI({ store: models })
+      FeatureAPI: new FeatureAPI({ store: models }),
+      IssueAPI: new IssueAPI({ store: models })
     };
   },
   context,

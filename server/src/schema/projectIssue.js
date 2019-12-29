@@ -30,22 +30,27 @@ export default gql`
   }
 
   extend type Query {
-    projectIssues(projectID: ID!): [ProjectIssue!]
+    projectIssues(projectId: ID!): [ProjectIssue!]
+    projectIssue(projectId: ID!, issueId: ID!): ProjectIssue!
   }
 
   input ProjectIssueInput {
-    projectID: ID!
+    projectId: ID!
     title: String!
     description: String!
     priority: Int!
     issueType: IssueType!
     status: IssueStatus!
     percentCompletion: Int!
+    estimatedTime: Int!
+    spentTime: Int!
     startDate: Date!
     dueDate: Date!
   }
 
   extend type Mutation {
+    updateProjectIssue(issueId: ID, input: ProjectFeatureInput): ProjectIssue!
+    deleteProjectIssue(issueId: ID): ProjectIssue!
     createProjectIssue(input: ProjectIssueInput!): ProjectIssue!
   }
 `;
