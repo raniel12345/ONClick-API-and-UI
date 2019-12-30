@@ -98,11 +98,7 @@ export default {
       return await dataSources.ProjectAPI.getAllByUserId(user.id);
     },
     projectStatuses: async (user, args, { dataSources }) => {
-      return await dataSources.ProjectStatusAPI.findAll({
-        where: {
-          userId: user.id
-        }
-      });
+      return await dataSources.ProjectStatusAPI.getAll(user.id);
     },
     groups: async (user, args, { loaders, dataSources }) => {
       const groupsIds = await dataSources.GroupAPI.getAllGroupsIdById(user.id);
