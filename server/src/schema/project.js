@@ -56,7 +56,7 @@ export default gql`
 
   extend type Query {
     projects: [Project!]
-    project(id: ID!): Project!
+    project(id: ID!): Project
   }
 
   type ProjectResponse {
