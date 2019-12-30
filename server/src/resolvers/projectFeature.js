@@ -12,7 +12,11 @@ export default {
     projectFeature: combineResolvers(
       isAuthenticated,
       async (_, { projectId, featureId }, { dataSources }) => {
-        return await dataSources.FeatureAPI.getById(projectId, featureId);
+        const feature = await dataSources.FeatureAPI.getById(
+          projectId,
+          featureId
+        );
+        return feature[0];
       }
     )
   },
