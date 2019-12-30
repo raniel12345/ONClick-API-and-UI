@@ -58,6 +58,17 @@ export default class ProjectAPI extends DataSource {
       modules
     } = projectInput;
 
+    let isAllowedToUseThisStatus = await this.store.ProjectStatus.findOne({
+      where: {
+        status: initialStatus,
+        userId
+      }
+    });
+
+    if (!isAllowedToUseThisStatus) {
+      throw new Error("Status not found on your list! - Invalid Status");
+    }
+
     return await this.store.User.findByPk(userId)
       .then(async user => {
         return await user.createProject(
