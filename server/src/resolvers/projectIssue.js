@@ -9,10 +9,11 @@ export default {
         return await dataSources.IssueAPI.getAll(projectId);
       }
     ),
-    projectFeature: combineResolvers(
+    projectIssue: combineResolvers(
       isAuthenticated,
       async (_, { projectId, issueId }, { dataSources }) => {
-        return await dataSources.IssueAPI.getById(projectId, issueId);
+        const issue = await dataSources.IssueAPI.getById(projectId, issueId);
+        return issue[0];
       }
     )
   },
