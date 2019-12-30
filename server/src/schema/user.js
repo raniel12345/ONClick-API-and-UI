@@ -16,7 +16,7 @@ export default gql`
     projectStatuses: [ProjectStatus!]
     createdAt: DateTime!
     updatedAt: DateTime!
-    deletedAt: DateTime!
+    deletedAt: DateTime
   }
 
   extend type Query {
