@@ -4,13 +4,13 @@ import { isAdmin, isAuthenticated } from "./authorization";
 
 export default {
   Query: {
-    Groups: combineResolvers(
+    groups: combineResolvers(
       isAuthenticated,
       async (_, __, { dataSources }) => {
         return await dataSources.GroupAPI.getAll();
       }
     ),
-    GroupById: combineResolvers(
+    group: combineResolvers(
       isAuthenticated,
       async (_, { id }, { dataSources }) => {
         return await dataSources.GroupAPI.getById(id);

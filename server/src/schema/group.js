@@ -12,8 +12,8 @@ export default gql`
   }
 
   extend type Query {
-    Groups: [Group!]
-    GroupById(id: ID!): Group!
+    groups: [Group!]
+    group(id: ID!): Group!
   }
 
   input GroupInput {

@@ -4,19 +4,19 @@ import { isAdmin, isAuthenticated } from "./authorization";
 
 export default {
   Query: {
-    ProjectUsersMembers: combineResolvers(
+    projectUsersMembers: combineResolvers(
       isAuthenticated,
       async (_, { projectId }, { me, dataSources }) => {
         return await dataSources.MemberAPI.getUserMembersIdsById(projectId);
       }
     ),
-    ProjectGroupsMembers: combineResolvers(
+    projectGroupsMembers: combineResolvers(
       isAuthenticated,
       async (_, { projectId }, { me, dataSources }) => {
         return await dataSources.MemberAPI.getGroupMembersIdsById(projectId);
       }
     ),
-    ProjectMembers: combineResolvers(
+    projectMembers: combineResolvers(
       isAuthenticated,
       async (_, { projectId }, { me, dataSources }) => {
         return await dataSources.MemberAPI.getAllProjectMembersIds(projectId);

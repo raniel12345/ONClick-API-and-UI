@@ -49,9 +49,9 @@ export default gql`
   }
 
   extend type Query {
-    ProjectMembers(projectId: ID!): ProjectMembers!
-    ProjectUsersMembers(projectId: ID!): [UserMember!]
-    ProjectGroupsMembers(projectId: ID!): [GroupMember!]
+    projectMembers(projectId: ID!): ProjectMembers!
+    projectUsersMembers(projectId: ID!): [UserMember!]
+    projectGroupsMembers(projectId: ID!): [GroupMember!]
   }
 
   extend type Mutation {
