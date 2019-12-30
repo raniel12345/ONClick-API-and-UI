@@ -25,7 +25,8 @@ export default class ProjectStatusAPI extends DataSource {
   async createNew(status, description, userId) {
     let existingStatus = await this.store.ProjectStatus.findOne({
       where: {
-        status
+        status,
+        userId
       }
     });
 
