@@ -1,60 +1,60 @@
-import { gql } from "apollo-server";
+import { gql } from 'apollo-server';
 
 export default gql`
-  enum ProjectRoles {
-    Developer
-    Reporter
-    Observer
-  }
+    enum ProjectRoles {
+        Developer
+        Reporter
+        Observer
+    }
 
-  type UserMember {
-    id: ID!
-    user: User!
-    role: ProjectRoles!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    deletedAt: DateTime
-  }
+    type UserMember {
+        id: ID!
+        user: User!
+        role: ProjectRoles!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        deletedAt: DateTime
+    }
 
-  type GroupMember {
-    id: ID!
-    group: Group!
-    role: ProjectRoles!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    deletedAt: DateTime
-  }
+    type GroupMember {
+        id: ID!
+        group: Group!
+        role: ProjectRoles!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        deletedAt: DateTime
+    }
 
-  type ProjectMembers {
-    memberUsers: [UserMember!]
-    memberGroups: [GroupMember!]
-  }
+    type ProjectMembers {
+        memberUsers: [UserMember!]
+        memberGroups: [GroupMember!]
+    }
 
-  enum memberType {
-    User
-    Group
-  }
+    enum memberType {
+        User
+        Group
+    }
 
-  input ProjectMemberInput {
-    projectId: ID!
-    role: ProjectRoles!
-    """
-    Member Type: User or Group
-    """
-    memberType: memberType!
-    """
-    it can be User ID or Group ID
-    """
-    memberId: ID!
-  }
+    input ProjectMemberInput {
+        projectId: ID!
+        role: ProjectRoles!
+        """
+        Member Type: User or Group
+        """
+        memberType: memberType!
+        """
+        it can be User ID or Group ID
+        """
+        memberId: ID!
+    }
 
-  extend type Query {
-    projectMembers(projectId: ID!): ProjectMembers!
-    projectUsersMembers(projectId: ID!): [UserMember!]
-    projectGroupsMembers(projectId: ID!): [GroupMember!]
-  }
+    extend type Query {
+        projectMembers(projectId: ID!): ProjectMembers!
+        projectUsersMembers(projectId: ID!): [UserMember!]
+        projectGroupsMembers(projectId: ID!): [GroupMember!]
+    }
 
-  extend type Mutation {
-    addProjectMember(input: ProjectMemberInput): ProjectMembers!
-  }
+    extend type Mutation {
+        addProjectMember(input: ProjectMemberInput): ProjectMembers!
+    }
 `;

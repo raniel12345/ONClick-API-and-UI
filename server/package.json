@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
+    "lint": "eslint ./src",
     "start-dev": "nodemon --exec babel-node src/index.js"
   },
   "author": "me",
@@ -42,6 +43,7 @@
     "axios": "^0.19.0",
     "babel-preset-latest-node": "^4.0.1",
     "chai": "^4.2.0",
+    "eslint": "^6.8.0",
     "jest": "^23.6.0",
     "mocha": "^6.2.1",
     "nock": "^10.0.2",

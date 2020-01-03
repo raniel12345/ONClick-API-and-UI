@@ -1,33 +1,33 @@
 const projectStatus = (sequelize, DataTypes) => {
-  const ProjectStatus = sequelize.define(
-    "projectStatus",
-    {
-      status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true
+    const ProjectStatus = sequelize.define(
+        'projectStatus',
+        {
+            status: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
+        },
+        {
+            paranoid: true
         }
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
-      }
-    },
-    {
-      paranoid: true
-    }
-  );
+    );
 
-  ProjectStatus.associate = models => {
-    ProjectStatus.belongsTo(models.User);
-    ProjectStatus.hasMany(models.Project);
-  };
+    ProjectStatus.associate = models => {
+        ProjectStatus.belongsTo(models.User);
+        ProjectStatus.hasMany(models.Project);
+    };
 
-  return ProjectStatus;
+    return ProjectStatus;
 };
 
 export default projectStatus;
