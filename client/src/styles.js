@@ -1,8 +1,10 @@
-// import { injectGlobal } from 'react-emotion';
+/** @jsx jsx */
 import React from 'react';
-import { Global, css } from '@emotion/core'; // ,
+// import { injectGlobal } from 'react-emotion';
+import { Global, css, jsx } from '@emotion/core'; // ,
 import normalize from 'normalize.css';
 
+// Pragma or pragmatic
 export const unit = 8;
 export const colors = {
     primary: '#220a82',

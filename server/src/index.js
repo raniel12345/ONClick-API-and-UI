@@ -25,7 +25,7 @@ const context = async ({ req }) => {
     /**
      * Authentitication
      */
-    const token = req.headers && req.headers.authorization ? req.headers['authorization'] : null;
+    const token = req.headers && req.headers.authorization ? req.headers.authorization : null;
     let user = null;
     if (token) {
         try {

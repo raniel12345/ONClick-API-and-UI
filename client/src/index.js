@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 
 // import Pages from './pages';
 import Login from './pages/login';
+import Pages from './pages';
 import { resolvers, typeDefs } from './resolvers_typeDefs';
 import injectStyles from './styles';
 
@@ -18,8 +19,7 @@ const client = new ApolloClient({
     link: new HttpLink({
         uri: 'http://localhost:5000/',
         headers: {
-            authorization:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJyYW5pZWwyMDIwQG9uc2VtaS5jb20iLCJ1c2VybmFtZSI6InJhbmllbDIwMjAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE1Nzg2NzI0NzUsImV4cCI6MTU3ODY3NDI3NX0.m5MHUWus4SWyOcc8D-r8AIz3XeBPKJA3y6aV-a6Rb_o', //localStorage.getItem('token'),
+            authorization: localStorage.getItem('token') ? localStorage.getItem('token') : '',
             'client-name': 'ONClick [web]',
             'client-version': '1.0.0'
         }
@@ -28,7 +28,7 @@ const client = new ApolloClient({
     typeDefs
 });
 
-console.log(localStorage.getItem('token'));
+// console.log(localStorage.getItem('token'));
 // localStorage.clear();
 
 cache.writeData({
@@ -56,8 +56,8 @@ const IS_LOGGED_IN = gql`
 
 function IsLoggedIn() {
     const { data } = useQuery(IS_LOGGED_IN);
-    console.log(data);
-    return data.isLoggedIn ? <h1>Logged IN</h1> : <Login />;
+    // console.log(data);
+    return data.isLoggedIn ? <Pages /> : <Login />;
     // return <Login />; //<Pages />
 }
 
