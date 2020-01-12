@@ -102,7 +102,7 @@ sequelize
     .then(async () => {
         if (process.env.NODE_ENV !== 'test')
             server
-                .listen({ port: 5000 })
+                .listen({ port: 5001 })
                 .then(({ url }) => console.log(`🚀 app running at ${url}`));
     })
     .catch(err => {
