@@ -58,8 +58,30 @@ const TopvarItem = styled('a')({
 
 export default function TopBar() {
     return (
-        <TopvarItem>
+        <Topnav id="myTopnav" className="topnav">
             <TopvarItem to="/">Home</TopvarItem>
-        </TopvarItem>
+            <TopvarItem to="/CreateProject">Create Project</TopvarItem>
+            <TopvarItem to="/Projects">Projects</TopvarItem>
+            <TopvarItem to="/Test1">Test</TopvarItem>
+            <TopvarItem to="/Test2">Test</TopvarItem>
+            <TopvarItem to="/Test3">Test</TopvarItem>
+            <TopvarItem to="/Test4">Test</TopvarItem>
+            <TopvarItem to="/Test5">Test</TopvarItem>
+            <TopvarItem to="/Test6">Test</TopvarItem>
+            <TopvarItem
+                href="javascript:void(0);"
+                className="icon"
+                onClick={() => {
+                    var x = document.getElementById('myTopnav');
+                    if (x.className === 'topnav') {
+                        x.className += ' responsive';
+                    } else {
+                        x.className = 'topnav';
+                    }
+                }}
+            >
+                Test
+            </TopvarItem>
+        </Topnav>
     );
 }
