@@ -15,7 +15,7 @@ import ProjectList from './components/ProjectList';
 import ProjectDetails from './components/ProjectDetails';
 import CreateProject from './components/CreateProject';
 import Help from './components/Help';
-import LoginPage from './components/Login';
+import Login from './pages/login';
 
 // localStorage.clear();
 
@@ -29,8 +29,6 @@ function App() {
     const { data } = useQuery(IS_LOGGED_IN);
     const { isLoggedIn } = data;
 
-    console.log(isLoggedIn);
-
     return (
         <Fragment>
             <TopBar isLoggedIn={isLoggedIn} />
@@ -43,7 +41,7 @@ function App() {
                         <Route path="/create-project" component={CreateProject} />
                     </Fragment>
                 ) : (
-                    <Route path="/login" component={LoginPage} />
+                    <Route path="/login" component={Login} />
                 )}
                 <Route path="/help" component={Help} />
                 <Route component={Default} />

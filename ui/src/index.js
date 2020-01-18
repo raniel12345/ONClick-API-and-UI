@@ -16,7 +16,7 @@ const cache = new InMemoryCache();
 const client = new ApolloClient({
     cache,
     link: new HttpLink({
-        uri: 'http://localhost:5001/',
+        uri: 'http://localhost:5000/',
         headers: {
             authorization: localStorage.getItem('token') ? localStorage.getItem('token') : '',
             'client-name': 'ONClick [web]',
