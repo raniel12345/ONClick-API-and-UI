@@ -1,45 +1,24 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Breadcrumb } from 'react-bootstrap';
 import { useApolloClient } from '@apollo/react-hooks';
+
+import styled from 'styled-components';
 
 export default function TopBar(props) {
     const client = useApolloClient();
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand as={Link} to="/" href="#home">
-                ONClick
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                    {props.isLoggedIn ? (
-                        <Fragment>
-                            <Nav.Link as={Link} to="/projects" href="#features">
-                                My Projects
-                            </Nav.Link>
-                            <Nav.Link as={Link} to="/create-project" href="#create-new-project">
-                                Create new project
-                            </Nav.Link>
-                        </Fragment>
-                    ) : null}
-
-                    <Nav.Link as={Link} to="/help" href="#help">
-                        Help
-                    </Nav.Link>
-                    {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                        </NavDropdown> */}
-                </Nav>
-                <Nav>
-                    {props.isLoggedIn ? (
-                        <Fragment>
-                            <NavDropdown title="Raniel Garcia" id="collasible-nav-dropdown">
+        <Fragment>
+            <div className="container-fluid">
+                <Navbar>
+                    <Navbar.Brand href="#home">
+                        <h2>Raniel Garci's Team</h2>
+                    </Navbar.Brand>
+                    <Navbar.Toggle />
+                    <Navbar.Collapse className="justify-content-end">
+                        <Navbar.Text>
+                            <NavDropdown title="Account" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
@@ -49,26 +28,58 @@ export default function TopBar(props) {
                                     to="/"
                                     href="#action/3.4"
                                     onClick={() => {
-                                        client.writeData({ data: { isLoggedIn: false } });
+                                        client.writeData({
+                                            data: { isLoggedIn: false }
+                                        });
                                         localStorage.clear();
                                     }}
                                 >
                                     Sign out
                                 </NavDropdown.Item>
                             </NavDropdown>
-                        </Fragment>
-                    ) : (
-                        <Nav.Link as={Link} to="/login" href="#deets">
-                            Sign in
-                        </Nav.Link>
-                    )}
+                        </Navbar.Text>
+                    </Navbar.Collapse>
+                </Navbar>
+            </div>
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <div className="container-fluid">
+                    <Navbar.Brand as={Link} to="/" href="#home">
+                        ONClick
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="mr-auto">
+                            {props.isLoggedIn ? (
+                                <Fragment>
+                                    <Nav.Link as={Link} to="/projects" href="#features">
+                                        Projects
+                                    </Nav.Link>
+                                    <Nav.Link
+                                        as={Link}
+                                        to="/create-project"
+                                        href="#create-new-project"
+                                    >
+                                        New project
+                                    </Nav.Link>
+                                </Fragment>
+                            ) : null}
 
-                    {/* <Nav.Link href="#deets">Sign out</Nav.Link>
-                        <Nav.Link eventKey={2} href="#memes">
-                            Dank memes
-                        </Nav.Link> */}
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+                            <Nav.Link as={Link} to="/help" href="#help">
+                                Help
+                            </Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </div>
+            </Navbar>
+            {/* <div className="container-fluid">
+                <Breadcrumb>
+                    <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
+                    <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
+                        Library
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item active>Data</Breadcrumb.Item>
+                </Breadcrumb>
+            </div> */}
+        </Fragment>
     );
 }

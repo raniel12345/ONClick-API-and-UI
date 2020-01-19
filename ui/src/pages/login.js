@@ -25,8 +25,20 @@ export default function Login() {
         }
     });
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>An error occurred</p>;
+    if (loading) {
+        return <LoginForm signIn={signIn} errorMsg="Loading..." />;
+    }
+
+    if (error) {
+        return (
+            <LoginForm
+                signIn={signIn}
+                errorMsg={error.graphQLErrors.map(({ message }, i) => (
+                    <span key={i}>{message}</span>
+                ))}
+            />
+        );
+    }
 
     return <LoginForm signIn={signIn} />;
 }

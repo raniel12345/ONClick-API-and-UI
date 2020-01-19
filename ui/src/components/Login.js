@@ -47,9 +47,6 @@ export default class Login extends Component {
                                 placeholder="Enter email"
                                 onChange={this.onEmailChanged}
                             />
-                            <Form.Text className="text-muted">
-                                We'll never share your email with anyone else.
-                            </Form.Text>
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
@@ -60,9 +57,7 @@ export default class Login extends Component {
                                 onChange={this.onPasswordChanged}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out" />
-                        </Form.Group>
+                        <p>{this.props.errorMsg}</p>
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>

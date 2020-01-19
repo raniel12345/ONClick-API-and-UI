@@ -19,7 +19,7 @@ import Login from './pages/login';
 
 // localStorage.clear();
 
-function App() {
+function IsLoggedIn() {
     const IS_LOGGED_IN = gql`
         query IsUserLoggedIn {
             isLoggedIn @client
@@ -28,26 +28,25 @@ function App() {
 
     const { data } = useQuery(IS_LOGGED_IN);
     const { isLoggedIn } = data;
-
-    return (
+    return isLoggedIn ? (
         <Fragment>
             <TopBar isLoggedIn={isLoggedIn} />
             <Switch>
                 <Route exact path="/" component={Home} />
-                {isLoggedIn ? (
-                    <Fragment>
-                        <Route path="/projects" component={ProjectList} />
-                        <Route path="/project/:projectId" component={ProjectDetails} />
-                        <Route path="/create-project" component={CreateProject} />
-                    </Fragment>
-                ) : (
-                    <Route path="/login" component={Login} />
-                )}
+                <Route path="/projects" component={ProjectList} />
+                <Route path="/project/:projectId" component={ProjectDetails} />
+                <Route path="/create-project" component={CreateProject} />
                 <Route path="/help" component={Help} />
                 <Route component={Default} />
             </Switch>
         </Fragment>
+    ) : (
+        <Login />
     );
+}
+
+function App() {
+    return <IsLoggedIn />;
 }
 
 export default App;
