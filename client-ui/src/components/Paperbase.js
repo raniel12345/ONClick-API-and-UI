@@ -187,7 +187,7 @@ function Paperbase(props) {
                     </Hidden>
                 </nav>
                 <div className={classes.app}>
-                    <Routers classes={classes} onDrawerToggle={handleDrawerToggle} />
+                    <Routers classes={classes} onDrawerToggle={handleDrawerToggle} theme={theme} />
                     <footer className={classes.footer}>
                         <Copyright />
                     </footer>
