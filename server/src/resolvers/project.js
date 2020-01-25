@@ -98,6 +98,14 @@ export default {
             async (_, { tag, projectId }, { me: { id }, dataSources }) => {
                 return await dataSources.ProjectAPI.deleteTag(tag, projectId, id);
             }
+        ),
+        searchProject: combineResolvers(
+            isAuthenticated,
+            async (_, { searchStr }, { me: { id }, dataSources }) => {
+                const projects = await dataSources.ProjectAPI.searchProjects(searchStr, id);
+                console.log(projects);
+                return projects;
+            }
         )
     },
     Project: {

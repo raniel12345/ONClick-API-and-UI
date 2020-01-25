@@ -1,7 +1,7 @@
 import { DataSource } from 'apollo-datasource';
 // import { AuthenticationError, UserInputError } from 'apollo-server';
-// import Sequelize from 'sequelize';
-// const Op = Sequelize.Op;
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
 
 export default class ProjectAPI extends DataSource {
     constructor({ store }) {
@@ -36,6 +36,31 @@ export default class ProjectAPI extends DataSource {
 
         //,
         //include: [this.store.User]
+    }
+
+    async searchProjects(searchStr, userId) {
+        return await this.store.Project.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        title: {
+                            [Op.like]: `%${searchStr}%`
+                        }
+                    },
+                    {
+                        tags: {
+                            [Op.contains]: [searchStr]
+                        }
+                    },
+                    {
+                        description: {
+                            [Op.like]: `%${searchStr}%`
+                        }
+                    }
+                ],
+                userId: userId
+            }
+        });
     }
 
     async getAllByUserId(userId) {

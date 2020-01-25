@@ -73,5 +73,6 @@ export default gql`
         addProjectTag(tag: String!, projectId: ID!): [String!]!
         deleteProjectTag(tag: String!, projectId: ID): [String!]
         deleteProject(id: ID!, userId: ID): ProjectResponse
+        searchProject(searchStr: String!): [Project!]
     }
 `;
