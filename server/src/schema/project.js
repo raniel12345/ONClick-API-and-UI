@@ -57,6 +57,7 @@ export default gql`
     extend type Query {
         projects: [Project!]
         project(id: ID!): Project
+        searchProjects(searchStr: String!): [Project!]
     }
 
     type ProjectResponse {
@@ -73,6 +74,5 @@ export default gql`
         addProjectTag(tag: String!, projectId: ID!): [String!]!
         deleteProjectTag(tag: String!, projectId: ID): [String!]
         deleteProject(id: ID!, userId: ID): ProjectResponse
-        searchProject(searchStr: String!): [Project!]
     }
 `;
