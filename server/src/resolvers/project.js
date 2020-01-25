@@ -4,8 +4,8 @@ import { isAuthenticated } from './authorization';
 
 export default {
     Query: {
-        projects: combineResolvers(isAuthenticated, async (_, __, { dataSources }) => {
-            return await dataSources.ProjectAPI.getAll();
+        projects: combineResolvers(isAuthenticated, async (_, __, { me, dataSources }) => {
+            return await dataSources.ProjectAPI.getAllByUserId(me.id);
         }),
         project: combineResolvers(isAuthenticated, async (_, { id }, { me, dataSources }) => {
             const project = await dataSources.ProjectAPI.getById(id, me.id);
