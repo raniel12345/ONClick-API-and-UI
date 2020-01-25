@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Projects from './Presentation/ProjectList';
-import Project from './Presentation/Project/';
+import Projects from './Presentation/Projects';
+import Project from './Presentation/ProjectDetails';
 import NewProject from './Presentation/NewProject';
 import Users from './Presentation/Users';
 
