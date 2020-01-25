@@ -40,6 +40,30 @@ const styles = theme => ({
     }
 });
 
+// function MainContainer() {
+//     const client = useApolloClient();
+
+//     const GET_CURRENT_USER_INFO = gql`
+//         query GetCurUserInfo {
+//             me {
+//                 username
+//                 email
+//                 role
+//             }
+//         }
+//     `;
+
+//     const { data, loading, error } = useQuery(GET_CURRENT_USER_INFO);
+
+//     if (loading) return <h1>Loading</h1>;
+//     if (error) return <h1>{error.message}</h1>;
+//     const { me } = data;
+
+//     client.writeData({ data: { curUserInfo: me } });
+
+//     return <AppContainer />;
+// }
+
 function Header(props) {
     const { classes, onDrawerToggle } = props;
 

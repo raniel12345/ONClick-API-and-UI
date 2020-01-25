@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,22 +9,13 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Alert from '@material-ui/lab/Alert';
+import Copyright from './Copyright';
+import CircularIndeterminate from './CircularIndeterminate';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -46,20 +37,54 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
     const classes = useStyles();
+
+    const [state, setState] = React.useState({
+        email: '',
+        password: ''
+    });
+
+    const inputHandler = name => event => {
+        setState({ ...state, [name]: event.target.value });
+    };
+
+    const SignIn = event => {
+        event.preventDefault();
+        props.signIn({
+            variables: state
+        });
+    };
+
+    const alertHandler = () => {
+        if (props.error === true) {
+            return 'error';
+        } else if (props.success === true) {
+            return 'success';
+        } else if (props.warning === true) {
+            return 'warning';
+        } else if (props.info === true) {
+            return 'info';
+        }
+        return '';
+    };
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
+                {props.loading ? (
+                    <CircularIndeterminate />
+                ) : (
+                    <Avatar className={classes.avatar}>
+                        {props.success ? <LockOpenIcon /> : <LockOutlinedIcon />}
+                    </Avatar>
+                )}
+
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={SignIn}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -70,6 +95,7 @@ export default function SignIn() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={inputHandler('email')}
                     />
                     <TextField
                         variant="outlined"
@@ -81,11 +107,17 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={inputHandler('password')}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
+                    {!props.loading ? (
+                        <Alert severity={alertHandler()}>{props.loginMsg}</Alert>
+                    ) : (
+                        ''
+                    )}
                     <Button
                         type="submit"
                         fullWidth
@@ -95,6 +127,7 @@ export default function SignIn() {
                     >
                         Sign In
                     </Button>
+
                     <Grid container>
                         <Grid item xs>
                             <Link href="#" variant="body2">

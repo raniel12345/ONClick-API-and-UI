@@ -3,24 +3,11 @@ import PropTypes from 'prop-types';
 import { createMuiTheme, ThemeProvider, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Hidden from '@material-ui/core/Hidden';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Navigator from './Navigator';
+
+import Navigator from './Presentation/Navigator';
+import Copyright from './Presentation/Copyright';
 
 import Routers from './Routers';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                ONClick
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 let theme = createMuiTheme({
     palette: {
@@ -161,7 +148,7 @@ const styles = {
     }
 };
 
-function Paperbase(props) {
+function AppContainer(props) {
     const { classes } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -197,8 +184,8 @@ function Paperbase(props) {
     );
 }
 
-Paperbase.propTypes = {
+AppContainer.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Paperbase);
+export default withStyles(styles)(AppContainer);

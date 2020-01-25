@@ -1,10 +1,10 @@
 import React from 'react';
-import Users from './Users';
 import { Switch, Route } from 'react-router-dom';
 
-import Projects from './ProjectList';
-import Project from './Project/index';
-import NewProject from './NewProject';
+import Projects from './Presentation/ProjectList';
+import Project from './Presentation/Project/';
+import NewProject from './Presentation/NewProject';
+import Users from './Presentation/Users';
 
 export default function Routers({ classes, onDrawerToggle }) {
     return (
