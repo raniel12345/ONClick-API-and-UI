@@ -18,16 +18,18 @@ function Projects(props) {
 
     return (
         <List className={classes.root}>
-            {projects.map(project => {
-                // console.log(project);
-                return (
-                    <ProjectTile
-                        key={project.id}
-                        project={project}
-                        viewProjectDetailsHandler={viewProjectDetailsHandler}
-                    />
-                );
-            })}
+            {projects.length > 0
+                ? projects.map(project => {
+                      // console.log(project);
+                      return (
+                          <ProjectTile
+                              key={project.id}
+                              project={project}
+                              viewProjectDetailsHandler={viewProjectDetailsHandler}
+                          />
+                      );
+                  })
+                : ''}
         </List>
     );
 }

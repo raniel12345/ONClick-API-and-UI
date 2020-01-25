@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,6 +11,9 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
+
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 const styles = theme => ({
     searchBar: {
@@ -30,6 +33,18 @@ const styles = theme => ({
 function ProjectAppBar(props) {
     const { classes } = props;
 
+    const searchProjectHandler = name => event => {
+        if (event.key === 'Enter') {
+            if (event.target.value !== '') {
+                props.setIsSearching(true);
+                props.setSearchString(event.target.value);
+            } else {
+                props.setIsSearching(false);
+                props.setSearchString('');
+            }
+        }
+    };
+
     return (
         <AppBar className={classes.searchBar} position="static" color="default" elevation={0}>
             <Toolbar>
@@ -45,6 +60,7 @@ function ProjectAppBar(props) {
                                 disableUnderline: true,
                                 className: classes.searchInput
                             }}
+                            onKeyDown={searchProjectHandler('searchStr')}
                         />
                     </Grid>
                     <Grid item>
@@ -52,7 +68,11 @@ function ProjectAppBar(props) {
                             New Project
                         </Button>
                         <Tooltip title="Reload">
-                            <IconButton>
+                            <IconButton
+                                onClick={() => {
+                                    props.setIsSearching(false);
+                                }}
+                            >
                                 <RefreshIcon className={classes.block} color="inherit" />
                             </IconButton>
                         </Tooltip>

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -16,7 +16,7 @@ import ProjectMembers from './ProjectList/ProjectMembers';
 import Chip from '@material-ui/core/Chip';
 
 //useApolloClient, useMutation,
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 const styles = theme => ({
@@ -28,43 +28,94 @@ const styles = theme => ({
     }
 });
 
+const PROJECT_TILE_DATA = gql`
+    fragment ProjectTile on Project {
+        id
+        title
+        subProject
+        description
+        homePage
+        tags
+        isPublic
+        owner {
+            username
+        }
+        modules
+        status {
+            status
+        }
+        members {
+            memberUsers {
+                user {
+                    username
+                }
+            }
+            memberGroups {
+                group {
+                    title
+                }
+            }
+        }
+        issues {
+            title
+        }
+        createdAt
+        updatedAt
+    }
+`;
+
 const GET_ALL_PROJECTS_BY_CURRENT_USER = gql`
     query {
         projects {
-            id
-            title
-            subProject
-            description
-            homePage
-            tags
-            isPublic
-            owner {
-                username
-            }
-            modules
-            status {
-                status
-            }
-            members {
-                memberUsers {
-                    user {
-                        username
-                    }
-                }
-                memberGroups {
-                    group {
-                        title
-                    }
-                }
-            }
-            issues {
-                title
-            }
-            createdAt
-            updatedAt
+            ...ProjectTile
         }
     }
+    ${PROJECT_TILE_DATA}
 `;
+
+const SEARCH_PROJECTS = gql`
+    query searchProjects($searchStr: String!) {
+        searchProjects(searchStr: $searchStr) {
+            ...ProjectTile
+        }
+    }
+    ${PROJECT_TILE_DATA}
+`;
+
+function AllProjects(props) {
+    const { data, loading, error } = useQuery(GET_ALL_PROJECTS_BY_CURRENT_USER, {
+        fetchPolicy: 'no-cache'
+    });
+
+    if (loading) return <Loading />;
+    if (error) return <h1>{error.message}</h1>;
+
+    return (
+        <Projects
+            projects={data.projects}
+            viewProjectDetailsHandler={props.viewProjectDetailsHandler}
+        />
+    );
+}
+
+function SearchProject(props) {
+    const { data, loading, error } = useQuery(SEARCH_PROJECTS, {
+        fetchPolicy: 'no-cache',
+        variables: {
+            searchStr: props.searchString
+        }
+    });
+
+    if (loading) return <Loading />;
+    if (error) return <h1>{error.message}</h1>;
+
+    return (
+        <Projects
+            projects={data.searchProjects}
+            viewProjectDetailsHandler={props.viewProjectDetailsHandler}
+        />
+    );
+}
 
 function ProjectList({ classes, onDrawerToggle }) {
     // const client = useApolloClient();
@@ -78,7 +129,8 @@ function ProjectList({ classes, onDrawerToggle }) {
         subProject: ''
     });
 
-    let projects = {};
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchString, setSearchString] = useState('');
 
     const viewProjectDetailsHandler = project => {
         setSelectedProject({
@@ -90,17 +142,6 @@ function ProjectList({ classes, onDrawerToggle }) {
             subProject: project.subProject
         });
     };
-    const { data, loading, error } = useQuery(GET_ALL_PROJECTS_BY_CURRENT_USER, {
-        fetchPolicy: 'no-cache'
-    });
-
-    if (!loading) {
-        projects = data['projects'];
-    }
-
-    // const searchProjectHandler = searchStr => {
-
-    // }
 
     return (
         <Fragment>
@@ -109,10 +150,23 @@ function ProjectList({ classes, onDrawerToggle }) {
                 <Grid container spacing={3}>
                     <Grid item md={8} sm={12} xs={12}>
                         <Card className={classes.card} variant="outlined">
-                            <ProjectAppBar />
+                            <ProjectAppBar
+                                setIsSearching={setIsSearching}
+                                setSearchString={setSearchString}
+                            />
                             <CardContent>
                                 <div className={classes.contentWrapper}>
-                                    {loading ? (
+                                    {isSearching === false ? (
+                                        <AllProjects
+                                            viewProjectDetailsHandler={viewProjectDetailsHandler}
+                                        />
+                                    ) : (
+                                        <SearchProject
+                                            viewProjectDetailsHandler={viewProjectDetailsHandler}
+                                            searchString={searchString}
+                                        />
+                                    )}
+                                    {/* {loading || !projects ? (
                                         <Loading />
                                     ) : (
                                         <Projects
@@ -120,7 +174,7 @@ function ProjectList({ classes, onDrawerToggle }) {
                                             viewProjectDetailsHandler={viewProjectDetailsHandler}
                                         />
                                     )}
-                                    {error ? <h1>{error.message}</h1> : ''}
+                                    {error ? <h1>{error.message}</h1> : ''} */}
 
                                     {/* <Loading /> */}
                                 </div>
@@ -153,11 +207,11 @@ function ProjectList({ classes, onDrawerToggle }) {
                                 <Typography variant="h6" gutterBottom>
                                     Tags:
                                 </Typography>
-                                <Typography variant="body2" gutterBottom>
+                                <div>
                                     {selectedProject.tags.map(tag => (
-                                        <Chip label={tag} variant="outlined" />
+                                        <Chip key={tag} label={tag} variant="outlined" />
                                     ))}
-                                </Typography>
+                                </div>
                                 <br />
                                 <Typography variant="h6" gutterBottom>
                                     Project Members:

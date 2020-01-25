@@ -46,7 +46,14 @@ function ProjectTile(props) {
                 <ListItemText
                     primary={title}
                     secondary={
-                        <div style={{ width: '80%' }}>{status.status + ' - ' + description}</div>
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                            style={{ width: '80%' }}
+                        >
+                            {status.status + ' - ' + description}
+                        </Typography>
                     }
                 />
                 <ListItemSecondaryAction>
