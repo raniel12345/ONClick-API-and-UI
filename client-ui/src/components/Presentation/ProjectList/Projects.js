@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -14,14 +14,20 @@ const styles = theme => ({
 });
 
 function Projects(props) {
-    const { classes, onDrawerToggle } = props;
+    const { classes, projects, viewProjectDetailsHandler } = props;
 
     return (
         <List className={classes.root}>
-            <ProjectTile />
-            <ProjectTile />
-            <ProjectTile />
-            <ProjectTile />
+            {projects.map(project => {
+                // console.log(project);
+                return (
+                    <ProjectTile
+                        key={project.id}
+                        project={project}
+                        viewProjectDetailsHandler={viewProjectDetailsHandler}
+                    />
+                );
+            })}
         </List>
     );
 }

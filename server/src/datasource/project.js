@@ -60,7 +60,7 @@ export default class ProjectAPI extends DataSource {
 
         let isAllowedToUseThisStatus = await this.store.ProjectStatus.findOne({
             where: {
-                status: initialStatus,
+                id: initialStatus,
                 userId
             }
         });

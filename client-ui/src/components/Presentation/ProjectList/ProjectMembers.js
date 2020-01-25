@@ -2,11 +2,14 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
+
+import Loading from './Loading';
+
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,39 +18,76 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function CheckboxListSecondary() {
-    const classes = useStyles();
-    const [checked, setChecked] = React.useState([1]);
-
-    const handleToggle = value => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
+const GET_PROJECT_MEMBERS = gql`
+    query projectMembers($projectId: ID!) {
+        projectMembers(projectId: $projectId) {
+            memberUsers {
+                role
+                user {
+                    username
+                    email
+                    role
+                }
+            }
+            memberGroups {
+                group {
+                    title
+                }
+                role
+            }
         }
+    }
+`;
 
-        setChecked(newChecked);
-    };
+export default function CheckboxListSecondary(props) {
+    const classes = useStyles();
+
+    const { projectId } = props;
+
+    const { data, loading, error } = useQuery(GET_PROJECT_MEMBERS, {
+        variables: {
+            projectId: projectId
+        }
+    });
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <List dense className={classes.root}>
-            {[0, 1, 2, 3].map(value => {
-                const labelId = `checkbox-list-secondary-label-${value}`;
-                return (
-                    <ListItem key={value} button>
-                        <ListItemAvatar>
-                            <Avatar
-                                alt={`Avatar n°${value + 1}`}
-                                src={`/static/images/avatar/${value + 1}.jpg`}
-                            />
-                        </ListItemAvatar>
-                        <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                    </ListItem>
-                );
-            })}
+            {data && data.projectMembers && data.projectMembers.memberUsers
+                ? data.projectMembers.memberUsers.map(user => {
+                      return (
+                          <ListItem key={user.user.email} button>
+                              <ListItemAvatar>
+                                  <Avatar alt={user.user.username} src="" />
+                              </ListItemAvatar>
+                              <ListItemText
+                                  id={user.user.email}
+                                  primary={user.user.username}
+                                  secondary={user.user.email + ' - ' + user.role}
+                              />
+                          </ListItem>
+                      );
+                  })
+                : ''}
+            {data && data.projectMembers && data.projectMembers.memberGroups
+                ? data.projectMembers.memberGroups.map(group => {
+                      return (
+                          <ListItem key={group} button>
+                              <ListItemAvatar>
+                                  <Avatar alt={group.group.title} src="" />
+                              </ListItemAvatar>
+                              <ListItemText
+                                  id={group.group.title}
+                                  primary={group.group.title}
+                                  secondary={group.role}
+                              />
+                          </ListItem>
+                      );
+                  })
+                : ''}
         </List>
     );
 }

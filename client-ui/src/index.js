@@ -8,8 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import { resolvers, typeDefs } from './resolvers';
 

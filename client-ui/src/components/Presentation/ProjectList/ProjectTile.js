@@ -25,30 +25,28 @@ const styles = theme => ({
 });
 
 function ProjectTile(props) {
-    const { classes, onDrawerToggle } = props;
+    const { classes, viewProjectDetailsHandler } = props;
+
+    const { id, title, description, status } = props.project;
 
     return (
         <Fragment>
-            <ListItem alignItems="flex-start" button>
+            <ListItem
+                alignItems="flex-start"
+                button
+                onClick={() => {
+                    viewProjectDetailsHandler(props.project);
+                }}
+            >
                 <ListItemAvatar>
                     <Avatar>
                         <FolderIcon />
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                    primary="Project Title"
+                    primary={title}
                     secondary={
-                        <Fragment>
-                            <Typography
-                                component="span"
-                                variant="body2"
-                                className={classes.inline}
-                                color="textPrimary"
-                            >
-                                Current Status
-                            </Typography>
-                            {" — I'll be in your neighborhood doing errands this…"}
-                        </Fragment>
+                        <div style={{ width: '80%' }}>{status.status + ' - ' + description}</div>
                     }
                 />
                 <ListItemSecondaryAction>
