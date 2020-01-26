@@ -70,24 +70,24 @@ const server = new ApolloServer({
         };
     },
     context,
-    formatError: error => {
-        // console.log(err);
+    // formatError: error => {
+    //     // console.log(err);
 
-        if (error.message.startsWith('Database Error: ')) {
-            return new Error('Internal server error');
-        }
+    //     if (error.message.startsWith('Database Error: ')) {
+    //         return new Error('Internal server error');
+    //     }
 
-        // remove the internal sequelize error message
-        // leave only the important validation error
-        const message = error.message
-            .replace('SequelizeValidationError: ', '')
-            .replace('Validation error: ', '');
+    //     // remove the internal sequelize error message
+    //     // leave only the important validation error
+    //     const message = error.message
+    //         .replace('SequelizeValidationError: ', '')
+    //         .replace('Validation error: ', '');
 
-        return {
-            ...error,
-            message
-        };
-    },
+    //     return {
+    //         ...error,
+    //         message
+    //     };
+    // },
     // formatResponse: res => {
     //   console.log(res);
     // },
