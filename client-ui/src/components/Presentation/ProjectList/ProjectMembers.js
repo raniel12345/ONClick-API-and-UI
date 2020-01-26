@@ -39,7 +39,7 @@ const GET_PROJECT_MEMBERS = gql`
     }
 `;
 
-export default function CheckboxListSecondary(props) {
+function GetProjectMembers(props) {
     const classes = useStyles();
 
     const { projectId } = props;
@@ -52,6 +52,10 @@ export default function CheckboxListSecondary(props) {
 
     if (loading) {
         return <Loading />;
+    }
+
+    if (error) {
+        return <h1>{error.message}</h1>;
     }
 
     return (
@@ -90,4 +94,12 @@ export default function CheckboxListSecondary(props) {
                 : ''}
         </List>
     );
+}
+
+export default function CheckboxListSecondary(props) {
+    if (props.projectId === 0) {
+        return <Loading />;
+    }
+
+    return <GetProjectMembers projectId={props.projectId} />;
 }
