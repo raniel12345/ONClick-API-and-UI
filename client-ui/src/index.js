@@ -5,9 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import ApolloClient, { InMemoryCache, HttpLink, ApolloLink } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import { resolvers, typeDefs } from './resolvers';
@@ -15,17 +13,36 @@ import { resolvers, typeDefs } from './resolvers';
 const cache = new InMemoryCache();
 const client = new ApolloClient({
     cache,
-    link: new HttpLink({
-        uri: 'http://localhost:5000/',
-        headers: {
-            authorization: localStorage.getItem('token') ? localStorage.getItem('token') : '',
-            'client-name': 'ONClick [web]',
-            'client-version': '1.0.0'
-        }
-    }),
+    uri: 'http://localhost:5000/',
+    request: operation => {
+        const token = localStorage.getItem('token') ? localStorage.getItem('token') : '';
+        operation.setContext({
+            headers: {
+                authorization: token,
+                'client-name': 'ONClick [web]',
+                'client-version': '1.0.0'
+            }
+        });
+    },
     resolvers,
-    typeDefs
+    typeDefs,
+    onError: error => {
+        console.log(error);
+
+        error.graphQLErrors.map(({ message, extensions }, i) => {
+            console.log(message);
+            if (extensions.code === 'UNAUTHENTICATED') {
+                localStorage.clear();
+                cache.writeData({
+                    data: {
+                        isLoggedIn: !!localStorage.getItem('token')
+                    }
+                });
+            }
+        });
+    }
 });
+
 cache.writeData({
     data: {
         isLoggedIn: !!localStorage.getItem('token')
