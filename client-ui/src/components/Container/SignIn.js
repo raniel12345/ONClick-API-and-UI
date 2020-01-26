@@ -26,7 +26,7 @@ export default function Login() {
     const [signIn, { loading, error }] = useMutation(LOGIN_USER, {
         onCompleted({ signIn }) {
             localStorage.setItem('token', signIn.token);
-            client.writeData({ data: { isLoggedIn: true } });
+            client.writeData({ data: { isLoggedIn: !!localStorage.getItem('token') } });
         },
         onError(err) {
             console.log(err);
