@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -15,13 +15,11 @@ import Loading from './ProjectList/Loading';
 import ProjectMembers from './ProjectList/ProjectMembers';
 import Chip from '@material-ui/core/Chip';
 
-//useApolloClient, useMutation,
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 const styles = theme => ({
     contentWrapper: {
-        // margin: '10px 16px',
         position: 'relative',
         overflow: 'auto',
         maxHeight: 800
@@ -84,11 +82,14 @@ const SEARCH_PROJECTS = gql`
 
 function AllProjects(props) {
     const { data, loading, error } = useQuery(GET_ALL_PROJECTS_BY_CURRENT_USER, {
-        fetchPolicy: 'no-cache'
+        errorPolicy: 'all'
     });
 
     if (loading) return <Loading />;
-    if (error) return <h1>{error.message}</h1>;
+
+    if (error) {
+        return <h2>{error.message}</h2>;
+    }
 
     return (
         <Projects
@@ -100,14 +101,16 @@ function AllProjects(props) {
 
 function SearchProject(props) {
     const { data, loading, error } = useQuery(SEARCH_PROJECTS, {
-        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
         variables: {
             searchStr: props.searchString
         }
     });
 
     if (loading) return <Loading />;
-    if (error) return <h1>{error.message}</h1>;
+    if (error) {
+        return <h2>{error.message}</h2>;
+    }
 
     return (
         <Projects
@@ -118,8 +121,6 @@ function SearchProject(props) {
 }
 
 function ProjectList({ classes, onDrawerToggle }) {
-    // const client = useApolloClient();
-
     const [selectedProject, setSelectedProject] = useState({
         id: 0,
         title: '',
@@ -166,17 +167,6 @@ function ProjectList({ classes, onDrawerToggle }) {
                                             searchString={searchString}
                                         />
                                     )}
-                                    {/* {loading || !projects ? (
-                                        <Loading />
-                                    ) : (
-                                        <Projects
-                                            projects={projects}
-                                            viewProjectDetailsHandler={viewProjectDetailsHandler}
-                                        />
-                                    )}
-                                    {error ? <h1>{error.message}</h1> : ''} */}
-
-                                    {/* <Loading /> */}
                                 </div>
                             </CardContent>
                         </Card>
