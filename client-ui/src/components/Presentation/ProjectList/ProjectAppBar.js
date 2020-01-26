@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
@@ -11,9 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
-
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 const styles = theme => ({
     searchBar: {
