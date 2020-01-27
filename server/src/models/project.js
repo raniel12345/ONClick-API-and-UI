@@ -1,9 +1,14 @@
 import date from 'date-and-time';
+import SequelizeSlugify from 'sequelize-slugify';
 
 const project = (sequelize, DataTypes) => {
     const Project = sequelize.define(
         'project',
         {
+            slug: {
+                type: DataTypes.STRING,
+                unique: true
+            },
             ticketNo: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -70,6 +75,14 @@ const project = (sequelize, DataTypes) => {
     Project.beforeCreate(async project => {
         const now = new Date();
         project.ticketNo = date.format(now, 'YYYYMMDDHHmmssSSS');
+    });
+
+    SequelizeSlugify.slugifyModel(Project, {
+        source: ['title'],
+        slugOptions: { lower: true },
+        overwrite: false,
+        column: 'slug',
+        incrementalReplacement: '-'
     });
 
     return Project;
