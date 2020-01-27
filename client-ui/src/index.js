@@ -29,17 +29,19 @@ const client = new ApolloClient({
     onError: error => {
         console.log(error);
 
-        error.graphQLErrors.map(({ message, extensions }, i) => {
-            console.log(message);
-            if (extensions.code === 'UNAUTHENTICATED') {
-                localStorage.clear();
-                cache.writeData({
-                    data: {
-                        isLoggedIn: !!localStorage.getItem('token')
-                    }
-                });
-            }
-        });
+        if (error.graphQLErrors && error.graphQLErrors !== 'undefined') {
+            error.graphQLErrors.map(({ message, extensions }, i) => {
+                console.log(message);
+                if (extensions.code === 'UNAUTHENTICATED') {
+                    localStorage.clear();
+                    cache.writeData({
+                        data: {
+                            isLoggedIn: !!localStorage.getItem('token')
+                        }
+                    });
+                }
+            });
+        }
     }
 });
 
