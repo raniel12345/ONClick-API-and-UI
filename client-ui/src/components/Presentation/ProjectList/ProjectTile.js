@@ -57,15 +57,22 @@ function ProjectTile(props) {
                     }
                 />
                 <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" className={classes.actionBtn}>
+                    <IconButton edge="end" aria-label="view" className={classes.actionBtn}>
                         <Badge badgeContent={4} color="secondary">
                             <VisibilityIcon />
                         </Badge>
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" className={classes.actionBtn}>
+                    <IconButton edge="end" aria-label="edit" className={classes.actionBtn}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" className={classes.actionBtn}>
+                    <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        className={classes.actionBtn}
+                        onClick={() => {
+                            props.deleteProject(id);
+                        }}
+                    >
                         <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
