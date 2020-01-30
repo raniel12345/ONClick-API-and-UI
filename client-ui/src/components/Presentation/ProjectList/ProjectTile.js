@@ -70,7 +70,7 @@ function ProjectTile(props) {
                         aria-label="delete"
                         className={classes.actionBtn}
                         onClick={() => {
-                            props.deleteProject(id);
+                            props.deleteProject(id, title);
                         }}
                     >
                         <DeleteIcon />

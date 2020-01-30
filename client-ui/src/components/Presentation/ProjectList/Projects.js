@@ -1,11 +1,17 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
 import ProjectTile from './ProjectTile';
-import Modal from '../Modal';
 
 const styles = theme => ({
     root: {
@@ -17,27 +23,54 @@ const styles = theme => ({
 function Projects(props) {
     const { classes, projects, viewProjectDetailsHandler } = props;
 
-    const [deleteProjectModalOpen, setDeleteProjectModalOpen] = useState(false);
+    const [deleteProjectDialogOpen, SetDeleteProjectDialogOpen] = useState(false);
     const [projectIdToDelete, setProjectIdToDelete] = useState(0);
+    const [projectTitleToDelete, setProjectTitleToDelete] = useState('');
 
-    const handleClose = () => {
-        setDeleteProjectModalOpen(false);
+    const handleCancel = () => {
+        SetDeleteProjectDialogOpen(false);
         setProjectIdToDelete(0);
+        setProjectTitleToDelete('');
     };
 
-    const deleteProject = projectId => {
-        if (projectId && projectId > 0) {
+    const handleDelete = () => {
+        console.log('Deleted');
+    };
+
+    const deleteProject = (projectId, projectTitle) => {
+        if (projectId && projectId > 0 && projectTitle) {
             setProjectIdToDelete(projectId);
-            setDeleteProjectModalOpen(true);
+            SetDeleteProjectDialogOpen(true);
+            setProjectTitleToDelete(projectTitle);
         }
     };
 
     return (
         <Fragment>
-            <Modal open={deleteProjectModalOpen} handleClose={handleClose}>
-                <h2 id="transition-modal-title">Transition modal</h2>
-                <p id="transition-modal-description">react-transition-group animates me.</p>
-            </Modal>
+            <Dialog
+                open={deleteProjectDialogOpen}
+                onClose={handleCancel}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{'Are you absolutely sure?'}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        This action cannot be undone. This will permanently delete the
+                        <strong> {projectTitleToDelete}</strong> project, wiki, issues, and
+                        comments, and remove all collaborator associations. Please click confirm to
+                        continue.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancel} color="primary" autoFocus>
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <List className={classes.root}>
                 {projects.length > 0
                     ? projects.map(project => {
