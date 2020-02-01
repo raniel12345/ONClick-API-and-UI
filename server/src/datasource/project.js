@@ -302,11 +302,31 @@ export default class ProjectAPI extends DataSource {
             });
         }
 
-        return await this.store.Project.destroy({
-            where: {
-                id: projectId,
-                userId: userId
-            }
-        });
+        const projectToDelete = this.getById(projectId, userId);
+
+        return projectToDelete
+            .then(async project => {
+                if (!project) {
+                    throw new Error('Project not found!');
+                }
+
+                if (parseInt(project[0].userId) !== parseInt(userId)) {
+                    throw new Error('Permission denied!');
+                }
+
+                return Boolean(await project[0].destroy());
+
+                // return await this.store.Project.destroy({
+                //     where: {
+                //         id: projectId,
+                //         userId: userId
+                //     }
+                // });
+
+                // throw new Error('Unable to delete this project');
+            })
+            .catch(err => {
+                throw err;
+            });
     }
 }

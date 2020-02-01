@@ -32,47 +32,63 @@ export default {
                     throw new Error('User id is required');
                 }
 
-                if (me && me.role && me.role === 'ADMIN' && me.id && parseInt(userId) !== me.id) {
-                    const projectToDelete = dataSources.ProjectAPI.getById(id, userId);
+                const isAdmin = me && me.role && me.role === 'ADMIN' ? true : false;
 
-                    return projectToDelete
-                        .then(async project => {
-                            if (await dataSources.ProjectAPI.deleteById(true, id, userId)) {
-                                return {
-                                    success: true,
-                                    message: 'Deleted successfully!',
-                                    project: project[0]
-                                };
-                            }
+                const deletedProject = await dataSources.ProjectAPI.deleteById(isAdmin, id, userId);
 
-                            throw new Error('Unable to delete this project');
-                        })
-                        .catch(err => {
-                            throw err;
-                        });
+                if (deletedProject) {
+                    return {
+                        success: true,
+                        message: 'Deleted successfully!'
+                    };
+                } else {
+                    return {
+                        success: false,
+                        message: 'Unable to delete this project'
+                    };
                 }
 
-                const projectToDelete = dataSources.ProjectAPI.getById(id, me.id);
+                // if (me && me.role && me.role === 'ADMIN' && me.id && parseInt(userId) !== me.id) {
+                //     const projectToDelete = dataSources.ProjectAPI.getById(id, userId);
 
-                return projectToDelete
-                    .then(async project => {
-                        if (parseInt(project[0].userId) !== parseInt(me.id)) {
-                            throw new Error('Permission denied!');
-                        }
+                //     return projectToDelete
+                //         .then(async project => {
+                //             if (await dataSources.ProjectAPI.deleteById(true, id, userId)) {
+                //                 return {
+                //                     success: true,
+                //                     message: 'Deleted successfully!',
+                //                     project: project[0]
+                //                 };
+                //             }
 
-                        if (await dataSources.ProjectAPI.deleteById(false, id, me.id)) {
-                            return {
-                                success: true,
-                                message: 'Deleted successfully!',
-                                project: project[0]
-                            };
-                        }
+                //             throw new Error('Unable to delete this project');
+                //         })
+                //         .catch(err => {
+                //             throw err;
+                //         });
+                // }
 
-                        throw new Error('Unable to delete this project');
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
+                // const projectToDelete = dataSources.ProjectAPI.getById(id, me.id);
+
+                // return projectToDelete
+                //     .then(async project => {
+                //         if (parseInt(project[0].userId) !== parseInt(me.id)) {
+                //             throw new Error('Permission denied!');
+                //         }
+
+                //         if (await dataSources.ProjectAPI.deleteById(false, id, me.id)) {
+                //             return {
+                //                 success: true,
+                //                 message: 'Deleted successfully!',
+                //                 project: project[0]
+                //             };
+                //         }
+
+                //         throw new Error('Unable to delete this project');
+                //     })
+                //     .catch(err => {
+                //         throw err;
+                //     });
             }
         ),
         updateProject: combineResolvers(
