@@ -108,6 +108,16 @@ sequelize
                 .listen({ port: 5000 })
                 .then(({ url }) => console.log(`🚀 app running at ${url}`));
     })
+    // .then(() => {
+    //     return models.Project.findAll({ paranoid: false });
+    // })
+    // .then(projects => {
+    //     // console.log(projects);
+    //     projects.map(project => {
+    //         project.setDataValue('deletedAt', null);
+    //         return project.save({ paranoid: false });
+    //     });
+    // })
     .catch(err => {
         console.log(err);
     });
