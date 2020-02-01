@@ -29,6 +29,7 @@ export default gql`
         success: Boolean!
         message: String!
         token: String!
+        user: User
     }
 
     extend type Mutation {

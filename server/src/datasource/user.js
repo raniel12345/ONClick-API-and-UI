@@ -87,7 +87,8 @@ export default class UserAPI extends DataSource {
                 return {
                     success: true,
                     message: 'Signup Successfully',
-                    token: await createToken(user, secret, tokenExpiration)
+                    token: await createToken(user, secret, tokenExpiration),
+                    user: user
                 };
             })
             .catch(err => {
@@ -124,7 +125,8 @@ export default class UserAPI extends DataSource {
                         return {
                             success: true,
                             message: 'Password Updated',
-                            token: await createToken(updatedUser, secret, tokenExpiration)
+                            token: await createToken(updatedUser, secret, tokenExpiration),
+                            user: updatedUser
                         };
                     });
             })
@@ -150,7 +152,8 @@ export default class UserAPI extends DataSource {
                         return {
                             success: true,
                             message: 'Role Updated',
-                            token: await createToken(updatedUser, secret, tokenExpiration)
+                            token: await createToken(updatedUser, secret, tokenExpiration),
+                            user: updatedUser
                         };
                     });
             })
@@ -177,8 +180,9 @@ export default class UserAPI extends DataSource {
 
         return {
             success: true,
-            message: '',
-            token: await createToken(user, secret, tokenExpiration)
+            message: 'You are successfully logged in',
+            token: await createToken(user, secret, tokenExpiration),
+            user: user
         };
     }
 
