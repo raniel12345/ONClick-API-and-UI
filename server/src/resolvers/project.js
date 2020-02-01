@@ -13,8 +13,8 @@ export default {
         }),
         searchProjects: combineResolvers(
             isAuthenticated,
-            async (_, { searchStr }, { me: { id }, dataSources }) => {
-                return await dataSources.ProjectAPI.searchProjects(searchStr, id);
+            async (_, { searchStr }, { me: { id, role }, dataSources, isAdmin }) => {
+                return await dataSources.ProjectAPI.searchProjects(searchStr, id, isAdmin(role));
             }
         )
     },
@@ -34,7 +34,12 @@ export default {
 
                 const isAdmin = me && me.role && me.role === 'ADMIN' ? true : false;
 
-                const deletedProject = await dataSources.ProjectAPI.deleteById(isAdmin, id, userId);
+                const userIdTmp = isAdmin ? userId : me.id;
+                const deletedProject = await dataSources.ProjectAPI.deleteById(
+                    isAdmin,
+                    id,
+                    userIdTmp
+                );
 
                 if (deletedProject) {
                     return {

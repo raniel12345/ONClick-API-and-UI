@@ -46,7 +46,31 @@ export default class ProjectAPI extends DataSource {
         });
     }
 
-    async searchProjects(searchStr, userId) {
+    async searchProjects(searchStr, userId, isAdmin) {
+        if (isAdmin && isAdmin === true) {
+            return await this.store.Project.findAll({
+                where: {
+                    [Op.or]: [
+                        {
+                            title: {
+                                [Op.like]: `%${searchStr}%`
+                            }
+                        },
+                        {
+                            tags: {
+                                [Op.contains]: [searchStr]
+                            }
+                        },
+                        {
+                            description: {
+                                [Op.like]: `%${searchStr}%`
+                            }
+                        }
+                    ]
+                }
+            });
+        }
+
         return await this.store.Project.findAll({
             where: {
                 [Op.or]: [
@@ -306,15 +330,16 @@ export default class ProjectAPI extends DataSource {
 
         return projectToDelete
             .then(async project => {
-                if (!project) {
-                    throw new Error('Project not found!');
-                }
+                console.log(project);
+                if (!project || project.length === 0) {
+                    throw new Error('Project not found! or permission denied!s');
+                } else {
+                    if (parseInt(project[0].userId) !== parseInt(userId)) {
+                        throw new Error('Permission denied!');
+                    }
 
-                if (parseInt(project[0].userId) !== parseInt(userId)) {
-                    throw new Error('Permission denied!');
+                    return Boolean(await project[0].destroy());
                 }
-
-                return Boolean(await project[0].destroy());
 
                 // return await this.store.Project.destroy({
                 //     where: {
