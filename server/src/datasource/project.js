@@ -285,7 +285,15 @@ export default class ProjectAPI extends DataSource {
             });
     }
 
-    async deleteById(projectId, userId) {
+    async deleteById(isAdmin, projectId, userId) {
+        if (isAdmin && isAdmin === true) {
+            return await this.store.Project.destroy({
+                where: {
+                    id: projectId
+                }
+            });
+        }
+
         return await this.store.Project.destroy({
             where: {
                 id: projectId,
