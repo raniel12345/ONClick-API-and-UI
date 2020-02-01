@@ -27,7 +27,13 @@ const styles = theme => ({
 function ProjectTile(props) {
     const { classes, viewProjectDetailsHandler } = props;
 
-    const { id, title, description, status } = props.project;
+    const {
+        id,
+        title,
+        description,
+        status,
+        owner: { id: ownerId }
+    } = props.project;
 
     return (
         <Fragment>
@@ -70,7 +76,7 @@ function ProjectTile(props) {
                         aria-label="delete"
                         className={classes.actionBtn}
                         onClick={() => {
-                            props.deleteProject(id, title);
+                            props.deleteThisProject(ownerId, id, title);
                         }}
                     >
                         <DeleteIcon />

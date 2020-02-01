@@ -1,4 +1,6 @@
 import React, { Fragment, useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -20,12 +22,35 @@ const styles = theme => ({
     }
 });
 
+const DELETE_PROJECT = gql`
+    mutation deleteProject($projectId: ID!, $ownerId: ID!) {
+        deleteProject(id: $projectId, userId: $ownerId) {
+            success
+            message
+            project {
+                title
+                description
+            }
+        }
+    }
+`;
+
 function Projects(props) {
     const { classes, projects, viewProjectDetailsHandler } = props;
 
     const [deleteProjectDialogOpen, SetDeleteProjectDialogOpen] = useState(false);
+    const [projectOwnerIdToDelete, setProjectOwnerIdToDelete] = useState(0);
     const [projectIdToDelete, setProjectIdToDelete] = useState(0);
     const [projectTitleToDelete, setProjectTitleToDelete] = useState('');
+
+    const [deleteProject, { loading, error }] = useMutation(DELETE_PROJECT, {
+        onCompleted({ deleteProject }) {
+            console.log(deleteProject);
+        },
+        onError(err) {
+            console.log(err);
+        }
+    });
 
     const handleCancel = () => {
         SetDeleteProjectDialogOpen(false);
@@ -33,12 +58,18 @@ function Projects(props) {
         setProjectTitleToDelete('');
     };
 
-    const handleDelete = () => {
-        console.log('Deleted');
+    const handleProjectDeletion = () => {
+        deleteProject({
+            variables: {
+                projectId: projectIdToDelete,
+                ownerId: projectOwnerIdToDelete
+            }
+        });
     };
 
-    const deleteProject = (projectId, projectTitle) => {
-        if (projectId && projectId > 0 && projectTitle) {
+    const deleteThisProject = (ownerId, projectId, projectTitle) => {
+        if (ownerId && ownerId > 0 && projectId && projectId > 0 && projectTitle) {
+            setProjectOwnerIdToDelete(ownerId);
             setProjectIdToDelete(projectId);
             SetDeleteProjectDialogOpen(true);
             setProjectTitleToDelete(projectTitle);
@@ -66,8 +97,8 @@ function Projects(props) {
                     <Button onClick={handleCancel} color="primary" autoFocus>
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="secondary">
-                        Confirm
+                    <Button onClick={handleProjectDeletion} color="secondary">
+                        {loading ? 'Loading...' : 'Confirm'}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -80,7 +111,7 @@ function Projects(props) {
                                   key={project.id}
                                   project={project}
                                   viewProjectDetailsHandler={viewProjectDetailsHandler}
-                                  deleteProject={deleteProject}
+                                  deleteThisProject={deleteThisProject}
                               />
                           );
                       })
