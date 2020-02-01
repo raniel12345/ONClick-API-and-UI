@@ -49,6 +49,9 @@ const context = async ({ req }) => {
 
     return {
         me: user,
+        isAdmin: role => {
+            return role && role === 'ADMIN' ? true : false;
+        },
         loaders,
         secret: process.env.SECRET_KEY
     };
