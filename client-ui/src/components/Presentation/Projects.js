@@ -36,6 +36,7 @@ const PROJECT_TILE_DATA = gql`
         tags
         isPublic
         owner {
+            id
             username
         }
         modules
