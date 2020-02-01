@@ -1,5 +1,8 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,7 +15,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -44,35 +46,27 @@ const styles = theme => ({
     }
 });
 
-// function MainContainer() {
-//     const client = useApolloClient();
-
-//     const GET_CURRENT_USER_INFO = gql`
-//         query GetCurUserInfo {
-//             me {
-//                 username
-//                 email
-//                 role
-//             }
-//         }
-//     `;
-
-//     const { data, loading, error } = useQuery(GET_CURRENT_USER_INFO);
-
-//     if (loading) return <h1>Loading</h1>;
-//     if (error) return <h1>{error.message}</h1>;
-//     const { me } = data;
-
-//     client.writeData({ data: { curUserInfo: me } });
-
-//     return <AppContainer />;
-// }
-
 function Header(props) {
     const client = useApolloClient();
     const { classes, onDrawerToggle } = props;
 
     const [anchorEl, setAnchorEl] = useState(null);
+
+    const GET_CUR_USER_INFO = gql`
+        query CurUserInfo {
+            CurUserInfo @client {
+                username
+                email
+                role
+            }
+        }
+    `;
+
+    const {
+        data: { CurUserInfo }
+    } = useQuery(GET_CUR_USER_INFO);
+
+    const { username } = CurUserInfo;
 
     const handleClick = event => {
         setAnchorEl(event.currentTarget);
@@ -85,7 +79,7 @@ function Header(props) {
     };
 
     const logout = () => {
-        client.writeData({ data: { isLoggedIn: false } });
+        client.writeData({ data: { isLoggedIn: false, CurUserInfo: null } });
         localStorage.clear();
     };
 
@@ -126,7 +120,7 @@ function Header(props) {
                                 className={classes.iconButtonAvatar}
                                 onClick={handleClick}
                             >
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
+                                <Avatar src="/static/images/avatar/1.jpg" alt={username} />
                             </IconButton>
                             <Menu
                                 id="simple-menu"
