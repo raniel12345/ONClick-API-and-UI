@@ -37,7 +37,7 @@ export default {
 
                     return projectToDelete
                         .then(async project => {
-                            if (await dataSources.ProjectAPI.deleteById(id, userId)) {
+                            if (await dataSources.ProjectAPI.deleteById(true, id, userId)) {
                                 return {
                                     success: true,
                                     message: 'Deleted successfully!',
@@ -56,11 +56,11 @@ export default {
 
                 return projectToDelete
                     .then(async project => {
-                        if (parseInt(project.userId) !== parseInt(me.id)) {
+                        if (parseInt(project[0].userId) !== parseInt(me.id)) {
                             throw new Error('Permission denied!');
                         }
 
-                        if (await dataSources.ProjectAPI.deleteById(id, me.id)) {
+                        if (await dataSources.ProjectAPI.deleteById(false, id, me.id)) {
                             return {
                                 success: true,
                                 message: 'Deleted successfully!',
