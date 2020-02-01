@@ -38,6 +38,14 @@ export default class ProjectAPI extends DataSource {
         //include: [this.store.User]
     }
 
+    async getBySlug(slug) {
+        return await this.store.Project.findAll({
+            where: {
+                slug: slug
+            }
+        });
+    }
+
     async searchProjects(searchStr, userId) {
         return await this.store.Project.findAll({
             where: {
