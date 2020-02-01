@@ -63,7 +63,7 @@ export default gql`
     type ProjectResponse {
         success: Boolean!
         message: String!
-        project: Project!
+        project: Project
     }
 
     extend type Mutation {
