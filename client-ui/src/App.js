@@ -44,10 +44,17 @@ function IsLoggedIn() {
         }
     `;
 
-    const { data } = useQuery(IS_LOGGED_IN);
-    const { isLoggedIn } = data;
+    const result = useQuery(IS_LOGGED_IN);
 
-    return isLoggedIn ? <MainRouter /> : <SignInRouter />;
+    console.log(result);
+    const { data } = result;
+
+    if (data && data !== 'undefined') {
+        const { isLoggedIn } = data;
+        return isLoggedIn ? <MainRouter /> : <SignInRouter />;
+    }
+
+    return <SignInRouter />;
 }
 
 function App(props) {

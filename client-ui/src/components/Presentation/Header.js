@@ -80,6 +80,9 @@ function Header(props) {
 
     const logout = () => {
         client.writeData({ data: { isLoggedIn: false, CurUserInfo: null } });
+        if (client && typeof client.resetStore === 'function') {
+            client.resetStore();
+        }
         localStorage.clear();
     };
 
