@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 // import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
@@ -31,7 +31,14 @@ const styles = theme => ({
 });
 
 function Projects(props) {
-    const { classes, projects, viewProjectDetailsHandler } = props;
+    const {
+        classes,
+        projects,
+        viewProjectDetailsHandler,
+        setDisplayAMsg,
+        setPageMsgSeverity,
+        setPageMsg
+    } = props;
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -41,14 +48,19 @@ function Projects(props) {
     const [projectIdToDelete, setProjectIdToDelete] = useState(0);
     const [projectTitleToDelete, setProjectTitleToDelete] = useState('');
 
-    const [deleteProject, { loading, error }] = useMutation(DELETE_PROJECT, {
+    const [
+        deleteProject,
+        { loading: deleteProjectLoading, error: deleteProjectError }
+    ] = useMutation(DELETE_PROJECT, {
         onCompleted({ deleteProject }) {
             console.log(deleteProject);
-            if (deleteProject.success) {
-                SetDeleteProjectDialogOpen(false);
-                setProjectIdToDelete(0);
-                setProjectTitleToDelete('');
-            }
+
+            SetDeleteProjectDialogOpen(false);
+            setProjectIdToDelete(0);
+            setProjectTitleToDelete('');
+            setPageMsgSeverity(deleteProject.success ? 'success' : 'error');
+            setPageMsg(deleteProject.message + ' -> ' + projectTitleToDelete);
+            setDisplayAMsg(true);
         },
         onError(err) {
             console.log(err);
@@ -113,7 +125,7 @@ function Projects(props) {
                         Cancel
                     </Button>
                     <Button onClick={handleProjectDeletion} color="secondary">
-                        {loading ? 'Loading...' : 'Confirm'}
+                        {deleteProjectLoading ? 'Processing...' : 'Confirm'}
                     </Button>
                 </DialogActions>
             </Dialog>

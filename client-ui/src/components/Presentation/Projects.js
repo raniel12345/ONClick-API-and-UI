@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Alert from '@material-ui/lab/Alert';
 
 import Header from './Header';
 import ProjectAppBar from './ProjectList/ProjectAppBar';
@@ -40,6 +41,9 @@ function AllProjects(props) {
     return (
         <Projects
             projects={data.projects}
+            setDisplayAMsg={props.setDisplayAMsg}
+            setPageMsgSeverity={props.setPageMsgSeverity}
+            setPageMsg={props.setPageMsg}
             viewProjectDetailsHandler={props.viewProjectDetailsHandler}
         />
     );
@@ -63,6 +67,9 @@ function SearchProject(props) {
             projects={data.searchProjects}
             searching
             searchString={props.searchString}
+            setDisplayAMsg={props.setDisplayAMsg}
+            setPageMsgSeverity={props.setPageMsgSeverity}
+            setPageMsg={props.setPageMsg}
             viewProjectDetailsHandler={props.viewProjectDetailsHandler}
         />
     );
@@ -80,6 +87,9 @@ function ProjectList({ classes, onDrawerToggle }) {
 
     const [isSearching, setIsSearching] = useState(false);
     const [searchString, setSearchString] = useState('');
+    const [displayAMsg, setDisplayAMsg] = useState(false);
+    const [pageMsgSeverity, setPageMsgSeverity] = useState('');
+    const [pageMsg, setPageMsg] = useState('');
 
     const viewProjectDetailsHandler = project => {
         setSelectedProject({
@@ -92,11 +102,25 @@ function ProjectList({ classes, onDrawerToggle }) {
         });
     };
 
+    if (displayAMsg) {
+        setTimeout(function() {
+            setDisplayAMsg(false);
+            setPageMsgSeverity('');
+            setPageMsg('');
+        }, 15000);
+    }
     return (
         <Fragment>
             <Header onDrawerToggle={onDrawerToggle} text="Your Projects" />
             <main className={classes.main}>
                 <Grid container spacing={3}>
+                    {displayAMsg ? (
+                        <Grid item sm={12}>
+                            <Alert severity={pageMsgSeverity}>{pageMsg}</Alert>
+                        </Grid>
+                    ) : (
+                        ''
+                    )}
                     <Grid item md={8} sm={12} xs={12}>
                         <Card className={classes.card} variant="outlined">
                             <ProjectAppBar
@@ -108,11 +132,17 @@ function ProjectList({ classes, onDrawerToggle }) {
                                     {isSearching === false ? (
                                         <AllProjects
                                             viewProjectDetailsHandler={viewProjectDetailsHandler}
+                                            setDisplayAMsg={setDisplayAMsg}
+                                            setPageMsgSeverity={setPageMsgSeverity}
+                                            setPageMsg={setPageMsg}
                                         />
                                     ) : (
                                         <SearchProject
                                             viewProjectDetailsHandler={viewProjectDetailsHandler}
                                             searchString={searchString}
+                                            setDisplayAMsg={setDisplayAMsg}
+                                            setPageMsgSeverity={setPageMsgSeverity}
+                                            setPageMsg={setPageMsg}
                                         />
                                     )}
                                 </div>
