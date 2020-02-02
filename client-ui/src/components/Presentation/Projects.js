@@ -81,6 +81,7 @@ function ProjectList({ classes, onDrawerToggle }) {
         title: '',
         description: '',
         tags: [],
+        modules: [],
         status: '',
         subProject: ''
     });
@@ -98,8 +99,10 @@ function ProjectList({ classes, onDrawerToggle }) {
             description: project.description,
             tags: [...project.tags],
             status: project.status.status,
+            modules: [...project.modules],
             subProject: project.subProject
         });
+        console.log(selectedProject);
     };
 
     if (displayAMsg) {
@@ -178,6 +181,15 @@ function ProjectList({ classes, onDrawerToggle }) {
                                 <div>
                                     {selectedProject.tags.map(tag => (
                                         <Chip key={tag} label={tag} variant="outlined" />
+                                    ))}
+                                </div>
+                                <br />
+                                <Typography variant="h6" gutterBottom>
+                                    Modules:
+                                </Typography>
+                                <div>
+                                    {selectedProject.modules.map(module => (
+                                        <Chip key={module} label={module} variant="outlined" />
                                     ))}
                                 </div>
                                 <br />
