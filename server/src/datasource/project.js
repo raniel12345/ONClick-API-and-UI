@@ -89,8 +89,8 @@ export default class ProjectAPI extends DataSource {
                             [Op.like]: `%${searchStr}%`
                         }
                     }
-                ]
-                // userId: userId
+                ],
+                userId: userId
             }
         });
     }
