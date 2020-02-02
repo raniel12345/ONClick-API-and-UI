@@ -89,8 +89,8 @@ export default class ProjectAPI extends DataSource {
                             [Op.like]: `%${searchStr}%`
                         }
                     }
-                ],
-                userId: userId
+                ]
+                // userId: userId
             }
         });
     }
@@ -318,37 +318,49 @@ export default class ProjectAPI extends DataSource {
     }
 
     async deleteById(isAdmin, projectId, userId) {
+        const results = {
+            isDone: false,
+            msg: ''
+        };
+
         if (isAdmin && isAdmin === true) {
-            return await this.store.Project.destroy({
-                where: {
-                    id: projectId
-                }
-            });
+            results.isDone = Boolean(
+                await this.store.Project.destroy({
+                    where: {
+                        id: projectId
+                    }
+                })
+            );
+            results.msg = 'Deleted successfully!';
+
+            return results;
         }
 
         const projectToDelete = this.getById(projectId, userId);
 
         return projectToDelete
             .then(async project => {
-                console.log(project);
                 if (!project || project.length === 0) {
-                    throw new Error('Project not found! or permission denied!s');
+                    results.isDone = false;
+                    results.msg = 'Permission denied!';
+                    return results;
                 } else {
                     if (parseInt(project[0].userId) !== parseInt(userId)) {
-                        throw new Error('Permission denied!');
+                        results.isDone = false;
+                        results.msg = 'Permission denied!';
+                        return results;
+                    }
+                    const isDone = Boolean(await project[0].destroy());
+                    if (isDone) {
+                        results.isDone = true;
+                        results.msg = 'Deleted Successfully!';
+                    } else {
+                        results.isDone = true;
+                        results.msg = 'Unable to delete this project';
                     }
 
-                    return Boolean(await project[0].destroy());
+                    return results;
                 }
-
-                // return await this.store.Project.destroy({
-                //     where: {
-                //         id: projectId,
-                //         userId: userId
-                //     }
-                // });
-
-                // throw new Error('Unable to delete this project');
             })
             .catch(err => {
                 throw err;
