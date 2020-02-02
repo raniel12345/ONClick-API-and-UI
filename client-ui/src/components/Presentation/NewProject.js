@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import Header from './Header';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,9 +11,16 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 
+import SelectSubProject from './NewProject/SelectSubProject';
 import ProjectMemberSelect from './ProjectMemberSelect';
 import ModuleSelect from './ModuleSelect';
 
@@ -53,20 +60,64 @@ const useStyles = makeStyles(theme => ({
 export default function NewProject({ onDrawerToggle }) {
     const classes = useStyles();
 
-    const [state, setState] = React.useState({
-        isPublic: true
+    const [state, setState] = useState({
+        isPublic: true,
+        subProject: {
+            id: 0,
+            title: ''
+        },
+        title: '',
+        description: '',
+        homePage: '',
+        tags: []
     });
+
+    // const [inputValidation, setInputValidation] = useState({
+    //     tags: {
+    //         error: false,
+    //         msg: ''
+    //     }
+    // });
+
+    const [isSelectSubProjectDialogOpen, setIsSelectSubProjectDialogOpen] = useState(false);
+
+    const setSubProject = (id, title) => {
+        setState({
+            ...state,
+            subProject: {
+                id,
+                title
+            }
+        });
+    };
 
     const isPublicHandleChange = name => event => {
         setState({ ...state, [name]: event.target.checked });
     };
 
-    const tagsDeleteHandle = () => {
-        console.info('You clicked the delete icon.');
+    const handleInputting = name => event => {
+        setState({ ...state, [name]: event.target.value });
     };
 
-    const tagsClickHandle = () => {
-        console.info('You clicked the Chip.');
+    const camelize = text => {
+        text = text.replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
+        return text.substr(0, 1).toLowerCase() + text.substr(1);
+    };
+
+    const handleTagsInputting = name => event => {
+        if (event.key === 'Enter') {
+            let tempTags = [...state.tags];
+            tempTags.push(camelize(event.target.value));
+            setState({ ...state, [name]: tempTags });
+            event.target.value = '';
+        }
+    };
+
+    const tagsDeleteHandle = tag => {
+        let tempTags = [...state.tags];
+        const index = tempTags.indexOf(tag);
+        tempTags.splice(index, 1);
+        setState({ ...state, tags: tempTags });
     };
 
     return (
@@ -76,6 +127,10 @@ export default function NewProject({ onDrawerToggle }) {
             <main className={classes.main}>
                 <Grid container spacing={3}>
                     <Grid item md={9} sm={12} xs={12}>
+                        <SelectSubProject
+                            open={isSelectSubProjectDialogOpen}
+                            setSelectSubProjectDialog={setIsSelectSubProjectDialogOpen}
+                        />
                         <Card className={classes.card} variant="outlined">
                             <CardHeader title="Project Details" subheader="September 14, 2016" />
                             <CardContent>
@@ -100,17 +155,36 @@ export default function NewProject({ onDrawerToggle }) {
                                                     }
                                                     label="Public"
                                                 />
+
+                                                <FormControl fullWidth disabled>
+                                                    <InputLabel htmlFor="standard-adornment-password">
+                                                        Sub Project of
+                                                    </InputLabel>
+                                                    <Input
+                                                        id="standard-adornment-password"
+                                                        value="testing"
+                                                        endAdornment={
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle findInPage"
+                                                                    onClick={() => {
+                                                                        setIsSelectSubProjectDialogOpen(
+                                                                            true
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <FindInPageIcon />
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        }
+                                                    />
+                                                </FormControl>
+
                                                 <TextField
                                                     id="project-title"
                                                     fullWidth
                                                     margin="normal"
                                                     label="Title"
-                                                />
-                                                <TextField
-                                                    id="sub-project-of"
-                                                    fullWidth
-                                                    margin="normal"
-                                                    label="Sub Project of"
                                                 />
                                                 <TextField
                                                     id="standard-textarea"
@@ -131,18 +205,23 @@ export default function NewProject({ onDrawerToggle }) {
                                                     type="search"
                                                     fullWidth
                                                     margin="normal"
+                                                    onKeyDown={handleTagsInputting('tags')}
                                                 />
                                                 <div className={classes.tags}>
-                                                    <Chip
-                                                        label="Deletable primary"
-                                                        onDelete={tagsDeleteHandle}
-                                                        color="primary"
-                                                    />
-                                                    <Chip
-                                                        label="Deletable primary"
-                                                        onDelete={tagsDeleteHandle}
-                                                        color="primary"
-                                                    />
+                                                    {state.tags
+                                                        ? state.tags.map(tag => {
+                                                              return (
+                                                                  <Chip
+                                                                      key={tag}
+                                                                      label={tag}
+                                                                      onDelete={() => {
+                                                                          tagsDeleteHandle(tag);
+                                                                      }}
+                                                                      color="primary"
+                                                                  />
+                                                              );
+                                                          })
+                                                        : ''}
                                                 </div>
                                             </FormGroup>
                                         </form>

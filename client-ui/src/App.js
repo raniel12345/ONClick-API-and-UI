@@ -49,7 +49,7 @@ function IsLoggedIn() {
 
     if (data && data !== 'undefined') {
         const { isLoggedIn } = data;
-        return isLoggedIn ? <MainRouter /> : <SignInRouter />;
+        return isLoggedIn ? <AppContainer /> : <SignInRouter />;
     }
 
     return <SignInRouter />;
