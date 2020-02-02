@@ -2,16 +2,24 @@ import React, { Fragment, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import Alert from '@material-ui/lab/Alert';
+// import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
+
+import {
+    GET_ALL_PROJECTS_BY_CURRENT_USER,
+    SEARCH_PROJECTS,
+    DELETE_PROJECT
+} from '../../Queries/Project/queries';
 
 import ProjectTile from './ProjectTile';
 
@@ -22,21 +30,11 @@ const styles = theme => ({
     }
 });
 
-const DELETE_PROJECT = gql`
-    mutation deleteProject($projectId: ID!, $ownerId: ID!) {
-        deleteProject(id: $projectId, userId: $ownerId) {
-            success
-            message
-            project {
-                title
-                description
-            }
-        }
-    }
-`;
-
 function Projects(props) {
     const { classes, projects, viewProjectDetailsHandler } = props;
+
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [deleteProjectDialogOpen, SetDeleteProjectDialogOpen] = useState(false);
     const [projectOwnerIdToDelete, setProjectOwnerIdToDelete] = useState(0);
@@ -46,6 +44,11 @@ function Projects(props) {
     const [deleteProject, { loading, error }] = useMutation(DELETE_PROJECT, {
         onCompleted({ deleteProject }) {
             console.log(deleteProject);
+            if (deleteProject.success) {
+                SetDeleteProjectDialogOpen(false);
+                setProjectIdToDelete(0);
+                setProjectTitleToDelete('');
+            }
         },
         onError(err) {
             console.log(err);
@@ -63,7 +66,18 @@ function Projects(props) {
             variables: {
                 projectId: projectIdToDelete,
                 ownerId: projectOwnerIdToDelete
-            }
+            },
+            refetchQueries: [
+                {
+                    query: !props.searching ? GET_ALL_PROJECTS_BY_CURRENT_USER : SEARCH_PROJECTS,
+                    variables: !props.searching
+                        ? {}
+                        : {
+                              searchStr: props.searchString
+                          }
+                }
+            ]
+            //props.searching ? {} : {}
         });
     };
 
@@ -79,6 +93,7 @@ function Projects(props) {
     return (
         <Fragment>
             <Dialog
+                fullScreen={fullScreen}
                 open={deleteProjectDialogOpen}
                 onClose={handleCancel}
                 aria-labelledby="alert-dialog-title"

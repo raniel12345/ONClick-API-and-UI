@@ -16,7 +16,7 @@ import ProjectMembers from './ProjectList/ProjectMembers';
 import Chip from '@material-ui/core/Chip';
 
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { GET_ALL_PROJECTS_BY_CURRENT_USER, SEARCH_PROJECTS } from '../Queries/Project/queries';
 
 const styles = theme => ({
     contentWrapper: {
@@ -25,61 +25,6 @@ const styles = theme => ({
         maxHeight: 800
     }
 });
-
-const PROJECT_TILE_DATA = gql`
-    fragment ProjectTile on Project {
-        id
-        title
-        subProject
-        description
-        homePage
-        tags
-        isPublic
-        owner {
-            id
-            username
-        }
-        modules
-        status {
-            status
-        }
-        members {
-            memberUsers {
-                user {
-                    username
-                }
-            }
-            memberGroups {
-                group {
-                    title
-                }
-            }
-        }
-        issues {
-            title
-        }
-        createdAt
-        updatedAt
-    }
-`;
-
-const GET_ALL_PROJECTS_BY_CURRENT_USER = gql`
-    query {
-        projects {
-            ...ProjectTile
-        }
-    }
-    ${PROJECT_TILE_DATA}
-`;
-
-const SEARCH_PROJECTS = gql`
-    query searchProjects($searchStr: String!) {
-        searchProjects(searchStr: $searchStr) {
-            ...ProjectTile
-        }
-    }
-    ${PROJECT_TILE_DATA}
-`;
 
 function AllProjects(props) {
     const { data, loading, error } = useQuery(GET_ALL_PROJECTS_BY_CURRENT_USER, {
@@ -116,6 +61,8 @@ function SearchProject(props) {
     return (
         <Projects
             projects={data.searchProjects}
+            searching
+            searchString={props.searchString}
             viewProjectDetailsHandler={props.viewProjectDetailsHandler}
         />
     );

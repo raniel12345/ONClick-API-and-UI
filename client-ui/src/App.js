@@ -45,8 +45,6 @@ function IsLoggedIn() {
     `;
 
     const result = useQuery(IS_LOGGED_IN);
-
-    console.log(result);
     const { data } = result;
 
     if (data && data !== 'undefined') {
