@@ -15,6 +15,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import CachedIcon from '@material-ui/icons/Cached';
 
+import { CreateProductConsumer } from '../Contexts/CreateProductContext';
 import Loading from '../ProjectList/Loading';
 
 import {
@@ -91,8 +92,6 @@ export default function SearchSubProjectDialog(props) {
     const [isSearching, setIsSearching] = useState(false);
     const [searchString, setSearchString] = useState('');
 
-    const { open } = props;
-
     const handleClose = () => {
         console.log('closed');
     };
@@ -110,51 +109,66 @@ export default function SearchSubProjectDialog(props) {
     };
 
     return (
-        <div>
-            <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={() => {
-                                props.setSelectSubProjectDialog(false);
-                            }}
-                            aria-label="close"
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            Sub Project of
-                        </Typography>
-                        <Paper className={classes.searchProjectField} elevation={0}>
-                            <InputBase
-                                className={classes.input}
-                                placeholder="Enter Search Project"
-                                inputProps={{ 'aria-label': 'search project' }}
-                                onKeyDown={searchProjectHandler('searchStr')}
-                            />
-                            <Divider className={classes.divider} light orientation="vertical" />
-                            <IconButton
-                                color="primary"
-                                className={classes.iconButton}
-                                aria-label="directions"
-                                onClick={() => {
-                                    setIsSearching(false);
-                                    setSearchString('');
-                                }}
-                            >
-                                <CachedIcon />
-                            </IconButton>
-                        </Paper>
-                    </Toolbar>
-                </AppBar>
-                {isSearching === false ? (
-                    <AllProjects />
-                ) : (
-                    <SearchProject searchString={searchString} />
-                )}
-            </Dialog>
-        </div>
+        <CreateProductConsumer>
+            {value => {
+                const { subProjectDialogOpen, closeProjectsModal } = value;
+
+                return (
+                    <Dialog
+                        fullScreen
+                        open={subProjectDialogOpen}
+                        onClose={handleClose}
+                        TransitionComponent={Transition}
+                    >
+                        <AppBar className={classes.appBar}>
+                            <Toolbar>
+                                <IconButton
+                                    edge="start"
+                                    color="inherit"
+                                    onClick={() => {
+                                        closeProjectsModal();
+                                    }}
+                                    aria-label="close"
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                                <Typography variant="h6" className={classes.title}>
+                                    Sub Project of
+                                </Typography>
+                                <Paper className={classes.searchProjectField} elevation={0}>
+                                    <InputBase
+                                        className={classes.input}
+                                        placeholder="Enter Search Project"
+                                        inputProps={{ 'aria-label': 'search project' }}
+                                        onKeyDown={searchProjectHandler('searchStr')}
+                                    />
+                                    <Divider
+                                        className={classes.divider}
+                                        light
+                                        orientation="vertical"
+                                    />
+                                    <IconButton
+                                        color="primary"
+                                        className={classes.iconButton}
+                                        aria-label="directions"
+                                        onClick={() => {
+                                            setIsSearching(false);
+                                            setSearchString('');
+                                        }}
+                                    >
+                                        <CachedIcon />
+                                    </IconButton>
+                                </Paper>
+                            </Toolbar>
+                        </AppBar>
+                        {isSearching === false ? (
+                            <AllProjects />
+                        ) : (
+                            <SearchProject searchString={searchString} />
+                        )}
+                    </Dialog>
+                );
+            }}
+        </CreateProductConsumer>
     );
 }

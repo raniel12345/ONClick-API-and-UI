@@ -6,6 +6,8 @@ import Project from './Presentation/ProjectDetails';
 import NewProject from './Presentation/NewProject';
 import Users from './Presentation/Users';
 
+import { CreateProductProvider } from './Presentation/Contexts/CreateProductContext';
+
 export default function Routers({ classes, onDrawerToggle }) {
     return (
         <Switch>
@@ -16,7 +18,9 @@ export default function Routers({ classes, onDrawerToggle }) {
                 <Project classes={classes} onDrawerToggle={onDrawerToggle} />
             </Route>
             <Route exact path="/new-project">
-                <NewProject onDrawerToggle={onDrawerToggle} />
+                <CreateProductProvider>
+                    <NewProject onDrawerToggle={onDrawerToggle} />
+                </CreateProductProvider>
             </Route>
             <Route path="/users">
                 <Users onDrawerToggle={onDrawerToggle} />

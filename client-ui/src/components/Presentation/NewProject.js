@@ -24,6 +24,8 @@ import SelectSubProject from './NewProject/SelectSubProject';
 import ProjectMemberSelect from './ProjectMemberSelect';
 import ModuleSelect from './ModuleSelect';
 
+import { CreateProductConsumer } from './Contexts/CreateProductContext';
+
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
@@ -60,200 +62,186 @@ const useStyles = makeStyles(theme => ({
 export default function NewProject({ onDrawerToggle }) {
     const classes = useStyles();
 
-    const [state, setState] = useState({
-        isPublic: true,
-        subProject: {
-            id: 0,
-            title: ''
-        },
-        title: '',
-        description: '',
-        homePage: '',
-        tags: []
-    });
-
-    // const [inputValidation, setInputValidation] = useState({
-    //     tags: {
-    //         error: false,
-    //         msg: ''
-    //     }
-    // });
-
-    const [isSelectSubProjectDialogOpen, setIsSelectSubProjectDialogOpen] = useState(false);
-
-    const setSubProject = (id, title) => {
-        setState({
-            ...state,
-            subProject: {
-                id,
-                title
-            }
-        });
-    };
-
-    const isPublicHandleChange = name => event => {
-        setState({ ...state, [name]: event.target.checked });
-    };
-
-    const handleInputting = name => event => {
-        setState({ ...state, [name]: event.target.value });
-    };
-
-    const camelize = text => {
-        text = text.replace(/[-_\s.]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''));
-        return text.substr(0, 1).toLowerCase() + text.substr(1);
-    };
-
-    const handleTagsInputting = name => event => {
-        if (event.key === 'Enter') {
-            let tempTags = [...state.tags];
-            tempTags.push(camelize(event.target.value));
-            setState({ ...state, [name]: tempTags });
-            event.target.value = '';
-        }
-    };
-
-    const tagsDeleteHandle = tag => {
-        let tempTags = [...state.tags];
-        const index = tempTags.indexOf(tag);
-        tempTags.splice(index, 1);
-        setState({ ...state, tags: tempTags });
-    };
-
     return (
         <Fragment>
             <Header onDrawerToggle={onDrawerToggle} text="Create new project" />
 
             <main className={classes.main}>
-                <Grid container spacing={3}>
-                    <Grid item md={9} sm={12} xs={12}>
-                        <SelectSubProject
-                            open={isSelectSubProjectDialogOpen}
-                            setSelectSubProjectDialog={setIsSelectSubProjectDialogOpen}
-                        />
-                        <Card className={classes.card} variant="outlined">
-                            <CardHeader title="Project Details" subheader="September 14, 2016" />
-                            <CardContent>
-                                <div className={classes.root}>
-                                    <div>
-                                        <form
-                                            className={classes.root}
-                                            noValidate
-                                            autoComplete="off"
-                                        >
-                                            <FormGroup row>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            checked={state.isPublic}
-                                                            onChange={isPublicHandleChange(
-                                                                'isPublic'
-                                                            )}
-                                                            value="isPublic"
-                                                            color="primary"
-                                                        />
-                                                    }
-                                                    label="Public"
-                                                />
+                <CreateProductConsumer>
+                    {value => {
+                        const {
+                            isPublic,
+                            subProject,
+                            tags,
+                            addTag,
+                            deleteTag,
+                            setFormInputVal,
+                            openProjectsModal
+                        } = value;
 
-                                                <FormControl fullWidth disabled>
-                                                    <InputLabel htmlFor="standard-adornment-password">
-                                                        Sub Project of
-                                                    </InputLabel>
-                                                    <Input
-                                                        id="standard-adornment-password"
-                                                        value="testing"
-                                                        endAdornment={
-                                                            <InputAdornment position="end">
-                                                                <IconButton
-                                                                    aria-label="toggle findInPage"
-                                                                    onClick={() => {
-                                                                        setIsSelectSubProjectDialogOpen(
-                                                                            true
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <FindInPageIcon />
-                                                                </IconButton>
-                                                            </InputAdornment>
-                                                        }
-                                                    />
-                                                </FormControl>
+                        return (
+                            <Grid container spacing={3}>
+                                <Grid item md={9} sm={12} xs={12}>
+                                    <SelectSubProject />
+                                    <Card className={classes.card} variant="outlined">
+                                        <CardHeader
+                                            title="Project Details"
+                                            subheader="September 14, 2016"
+                                        />
+                                        <CardContent>
+                                            <div className={classes.root}>
+                                                <div>
+                                                    <form
+                                                        className={classes.root}
+                                                        noValidate
+                                                        autoComplete="off"
+                                                    >
+                                                        <FormGroup row>
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Checkbox
+                                                                        checked={isPublic}
+                                                                        onChange={event => {
+                                                                            setFormInputVal(
+                                                                                'isPublic',
+                                                                                event.target.checked
+                                                                            );
+                                                                        }}
+                                                                        value="isPublic"
+                                                                        color="primary"
+                                                                    />
+                                                                }
+                                                                label="Public"
+                                                            />
 
-                                                <TextField
-                                                    id="project-title"
-                                                    fullWidth
-                                                    margin="normal"
-                                                    label="Title"
-                                                />
-                                                <TextField
-                                                    id="standard-textarea"
-                                                    label="Description"
-                                                    multiline
-                                                    fullWidth
-                                                    margin="normal"
-                                                />
-                                                <TextField
-                                                    id="sub-project-of"
-                                                    fullWidth
-                                                    margin="normal"
-                                                    label="Home page"
-                                                />
-                                                <TextField
-                                                    id="standard-search"
-                                                    label="Tags"
-                                                    type="search"
-                                                    fullWidth
-                                                    margin="normal"
-                                                    onKeyDown={handleTagsInputting('tags')}
-                                                />
-                                                <div className={classes.tags}>
-                                                    {state.tags
-                                                        ? state.tags.map(tag => {
-                                                              return (
-                                                                  <Chip
-                                                                      key={tag}
-                                                                      label={tag}
-                                                                      onDelete={() => {
-                                                                          tagsDeleteHandle(tag);
-                                                                      }}
-                                                                      color="primary"
-                                                                  />
-                                                              );
-                                                          })
-                                                        : ''}
+                                                            <FormControl fullWidth disabled>
+                                                                <InputLabel htmlFor="standard-adornment-password">
+                                                                    Sub Project of
+                                                                </InputLabel>
+                                                                <Input
+                                                                    id="standard-adornment-password"
+                                                                    value={subProject.title}
+                                                                    endAdornment={
+                                                                        <InputAdornment position="end">
+                                                                            <IconButton
+                                                                                aria-label="toggle findInPage"
+                                                                                onClick={() => {
+                                                                                    openProjectsModal();
+                                                                                }}
+                                                                            >
+                                                                                <FindInPageIcon />
+                                                                            </IconButton>
+                                                                        </InputAdornment>
+                                                                    }
+                                                                />
+                                                            </FormControl>
+
+                                                            <TextField
+                                                                id="project-title"
+                                                                fullWidth
+                                                                margin="normal"
+                                                                label="Title"
+                                                                onChange={event => {
+                                                                    setFormInputVal(
+                                                                        'title',
+                                                                        event.target.value
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <TextField
+                                                                id="standard-textarea"
+                                                                label="Description"
+                                                                multiline
+                                                                fullWidth
+                                                                margin="normal"
+                                                                onChange={event => {
+                                                                    setFormInputVal(
+                                                                        'description',
+                                                                        event.target.value
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <TextField
+                                                                id="sub-project-of"
+                                                                fullWidth
+                                                                margin="normal"
+                                                                label="Home page"
+                                                                onChange={event => {
+                                                                    setFormInputVal(
+                                                                        'homePage',
+                                                                        event.target.value
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <TextField
+                                                                id="standard-search"
+                                                                label="Tags"
+                                                                type="search"
+                                                                fullWidth
+                                                                margin="normal"
+                                                                onKeyDown={event => {
+                                                                    if (event.key === 'Enter') {
+                                                                        addTag(event.target.value);
+                                                                        event.target.value = '';
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <div className={classes.tags}>
+                                                                {tags
+                                                                    ? tags.map(tag => {
+                                                                          return (
+                                                                              <Chip
+                                                                                  key={tag}
+                                                                                  label={tag}
+                                                                                  onDelete={() => {
+                                                                                      deleteTag(
+                                                                                          tag
+                                                                                      );
+                                                                                  }}
+                                                                                  color="primary"
+                                                                              />
+                                                                          );
+                                                                      })
+                                                                    : ''}
+                                                            </div>
+                                                        </FormGroup>
+                                                    </form>
                                                 </div>
-                                            </FormGroup>
-                                        </form>
-                                    </div>
-                                </div>
-                            </CardContent>
-                            <CardActions className={classes.actions}>
-                                <Button size="small" className={classes.expand}>
-                                    Learn More
-                                </Button>
-                                <Button variant="contained" size="large" color="primary">
-                                    Create project
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                    <Grid item md={3} sm={12} xs={12}>
-                        <Card className={classes.card} variant="outlined">
-                            <CardHeader title="Choose Project members" />
-                            <CardContent>
-                                <ProjectMemberSelect />
-                            </CardContent>
-                        </Card>
+                                            </div>
+                                        </CardContent>
+                                        <CardActions className={classes.actions}>
+                                            <Button size="small" className={classes.expand}>
+                                                Learn More
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                size="large"
+                                                color="primary"
+                                            >
+                                                Create project
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                                <Grid item md={3} sm={12} xs={12}>
+                                    <Card className={classes.card} variant="outlined">
+                                        <CardHeader title="Choose Project members" />
+                                        <CardContent>
+                                            <ProjectMemberSelect />
+                                        </CardContent>
+                                    </Card>
 
-                        <Card className={classes.card} variant="outlined">
-                            <CardHeader title="Choose modules" />
-                            <CardContent>
-                                <ModuleSelect />
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
+                                    <Card className={classes.card} variant="outlined">
+                                        <CardHeader title="Choose modules" />
+                                        <CardContent>
+                                            <ModuleSelect />
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                        );
+                    }}
+                </CreateProductConsumer>
             </main>
         </Fragment>
     );

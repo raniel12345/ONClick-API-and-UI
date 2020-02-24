@@ -9,6 +9,8 @@ import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 
+import { CreateProductConsumer } from '../Contexts/CreateProductContext';
+
 const styles = theme => ({
     inline: {
         display: 'inline'
@@ -19,36 +21,43 @@ const styles = theme => ({
 });
 
 function ProjectTile(props) {
-    const { classes } = props;
+    const { classes, setSubProject } = props;
     //viewProjectDetailsHandler
 
     const { id, title, description, status } = props.project;
 
     return (
-        <Fragment>
-            <ListItem
-                alignItems="flex-start"
-                button
-                // onClick={() => {
-                //     viewProjectDetailsHandler(props.project);
-                // }}
-            >
-                <ListItemAvatar>
-                    <Avatar>
-                        <FolderIcon />
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                    primary={title}
-                    secondary={
-                        <Typography variant="caption" display="block" gutterBottom>
-                            {status.status + ' - ' + description}
-                        </Typography>
-                    }
-                />
-            </ListItem>
-            <Divider light />
-        </Fragment>
+        <CreateProductConsumer>
+            {value => {
+                const { setSubProject } = value;
+                return (
+                    <Fragment>
+                        <ListItem
+                            alignItems="flex-start"
+                            button
+                            onClick={() => {
+                                setSubProject(id, title);
+                            }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <FolderIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={title}
+                                secondary={
+                                    <Typography variant="caption" display="block" gutterBottom>
+                                        {status.status + ' - ' + description}
+                                    </Typography>
+                                }
+                            />
+                        </ListItem>
+                        <Divider light />
+                    </Fragment>
+                );
+            }}
+        </CreateProductConsumer>
     );
 }
 
